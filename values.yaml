@@ -1,0 +1,29 @@
+gitea:
+  admin:
+    # username: "gitea_admin"
+    password: "password"
+    # email: "admin@gitea.localhost"
+  config:
+    database:
+      DB_TYPE: sqlite3
+    cache:
+      ENABLED: false
+
+service:
+  ssh:
+    type: LoadBalancer
+
+postgresql:
+  enabled: false
+
+memcached:
+  enabled: false
+
+ingress:
+  enabled: true
+  apiVersion: networking.k8s.io/v1
+  hosts:
+    - host: gitea.localhost
+      paths:
+        - path: /
+          pathType: Prefix

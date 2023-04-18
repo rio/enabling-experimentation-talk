@@ -1,0 +1,33 @@
+# https://taskfile.dev
+
+version: '3'
+
+includes:
+  dev: .devcontainer
+
+tasks:
+  delete-cluster:
+    desc: "Take down the cluster and everything in it"
+    aliases: ["down"]
+    cmds:
+      - k3d cluster delete
+
+  create-cluster:
+    desc: "Start the cluster"
+    cmds:
+      - k3d cluster create --config k3d-config.yaml
+    status:
+      - k3d cluster list --no-headers | grep k3s-default > /dev/null
+
+  deploy:
+    desc: "Deploy everything"
+    aliases: ["up"]
+    deps:
+      - task: create-cluster
+    cmds:
+      - skaffold deploy
+
+  delete:
+    desc: "Delete everything"
+    cmds:
+      - skaffold delete

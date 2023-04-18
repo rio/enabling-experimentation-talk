@@ -1,0 +1,20 @@
+apiVersion: skaffold/v4beta4
+kind: Config
+
+# manifests:
+#   kustomize:
+#     paths:
+#       - argocd
+
+deploy:
+  helm:
+    releases:
+      - name: gitea
+        remoteChart: gitea
+        repo: https://dl.gitea.io/charts/
+        namespace: gitea
+        createNamespace: true
+        valuesFiles:
+          - values.yaml
+
+  kubectl: {}
