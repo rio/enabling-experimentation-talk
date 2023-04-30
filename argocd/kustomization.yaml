@@ -5,8 +5,10 @@ namespace: argocd
 
 resources:
 - namespace.yaml
-- https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+# https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+- install.yaml
 - ingress.yaml
+- repository.yaml
 
 configMapGenerator:
   - name: argocd-cmd-params-cm
@@ -14,3 +16,7 @@ configMapGenerator:
     literals:
       - server.insecure=true
       - server.disable.auth=true
+  - name: argocd-cm
+    behavior: merge
+    literals:
+      - timeout.reconciliation=10s

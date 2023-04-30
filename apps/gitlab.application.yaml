@@ -1,0 +1,75 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gitlab
+  namespace: argocd
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: gitlab
+  syncPolicy:
+    automated:
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
+  project: default
+  source:
+    repoURL: https://charts.gitlab.io/
+    chart: gitlab
+    targetRevision: v6.11.0
+    helm:
+      releaseName: gitlab
+      values: |
+        global:
+          edition: ce
+          hosts:
+            domain: localhost
+            https: false
+          ingress:
+            configureCertmanager: false
+            class: none
+            tls:
+              enabled: false
+          grafana:
+            enabled: false
+          kas:
+            enabled: false
+
+        registry:
+          hpa:
+            minReplicas: 1
+
+        gitlab:
+          webservice:
+            minReplicas: 1
+
+          gitlab-shell:
+            minReplicas: 1
+
+        gitlab-runner:
+          gitlabUrl: http://gitlab-webservice-default.gitlab.svc.cluster.local:8181
+          rbac:
+            create: true
+            rules:
+              - apiGroups: ["*"]
+                resources: ["*"]
+                verbs: ["*"]
+            clusterWideAccess: true
+          checkInterval: 5
+          runners:
+            serviceAccountName: gitlab-gitlab-runner
+            config: |
+              [[runners]]
+                clone_url = "http://gitlab-webservice-default.gitlab.svc.cluster.local:8181"
+
+        certmanager:
+          install: false
+
+        prometheus:
+          install: false
+
+        nginx-ingress:
+          enabled: false
+
+        upgradeCheck:
+          enabled: false

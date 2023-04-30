@@ -2,32 +2,70 @@
 
 version: '3'
 
+set:
+  - "errexit"
+  - "nounset"
+  - "pipefail"
+
 includes:
   dev: .devcontainer
+  demo: Taskfile.demo.yml
+  kubeflow: Taskfile.kubeflow.yml
+  vcluster: 
+    taskfile: Taskfile.vcluster.yml
+    internal: true
+  tools: 
+    taskfile: Taskfile.tools.yml
+    internal: true
 
 tasks:
-  delete-cluster:
-    desc: "Take down the cluster and everything in it"
-    aliases: ["down"]
-    cmds:
-      - k3d cluster delete
-
-  create-cluster:
-    desc: "Start the cluster"
-    cmds:
-      - k3d cluster create --config k3d-config.yaml
-    status:
-      - k3d cluster list --no-headers | grep k3s-default > /dev/null
-
-  deploy:
-    desc: "Deploy everything"
-    aliases: ["up"]
+  create-env:
+    desc: "Create the vcluster"
     deps:
-      - task: create-cluster
+      - task: tools:ensure-kubectl
+      - task: tools:ensure-helm
+      - task: tools:ensure-kustomize
+      - task: tools:ensure-skaffold
+    env:
+      SKAFFOLD_LABEL: skaffold.dev/run-id=identifier-to-make-skaffold-idempotent
     cmds:
-      - skaffold deploy
+      - task: vcluster:create
+      - task: vcluster:connect
+      - defer: { task: vcluster:disconnect }
 
-  delete:
-    desc: "Delete everything"
+      - task: kubeflow:set-domain
+      - cmd: skaffold deploy -m kubeflow
+
+      # - cmd: kubectl wait --for=condition=established crds/rayjobs.ray.io
+      # - cmd: kubectl apply -n kuberay -f https://github.com/ray-project/kuberay/raw/master/ray-operator/config/samples/ray_v1alpha1_rayjob.yaml
+
+  list-env:
+    desc: "List all vclusters"
     cmds:
-      - skaffold delete
+      - task: vcluster:list
+
+  delete-env:
+    desc: "Destroy the vcluster"
+    cmds:
+      - task: vcluster:delete 
+
+  build-pipeline:
+    desc: "Build a pipeline from python code"
+    deps:
+      - task: tools:ensure-kfp1
+    cmds:
+      - ./pipeline.py
+
+  deploy-pipeline:
+    deps:
+      - task: tools:ensure-kubectl
+    preconditions:
+      - sh: test -n "{{.VCLUSTER_NAME}}"
+        msg: "missing VCLUSTER_NAME environment variable"
+    cmds:
+      - task: vcluster:connect
+      - defer: { task: vcluster:disconnect }
+      - kubectl port-forward -n kubeflow svc/ml-pipeline-ui 8080:80 &
+      - task: kubeflow:wait-for-api
+      - task: kubeflow:upload-pipeline
+

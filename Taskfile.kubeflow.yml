@@ -1,0 +1,48 @@
+# https://taskfile.dev
+
+version: '3'
+
+set:
+  - "errexit"
+  - "nounset"
+  - "pipefail"
+
+includes:
+  tools: 
+    taskfile: Taskfile.tools.yml
+    internal: true
+
+tasks:
+  set-domain:
+    desc: "Update the ingress host if the CI_ENVIRONMENT_URL environment variable is found"
+    internal: true
+    dir: kubeflow/preview
+    deps:
+      - task: tools:ensure-kustomize
+    vars:
+      KUBEFLOW_DOMAIN: '{{.CI_ENVIRONMENT_URL | default "" | trimPrefix "http://" | trimSuffix "/"}}'
+    cmds:
+      - if [[ -n "{{.KUBEFLOW_DOMAIN}}" ]]; then kustomize edit set annotation preview/domain:"{{.KUBEFLOW_DOMAIN}}" ; fi
+
+  wait-for-api:
+    internal: true
+    deps:
+      - task: tools:ensure-jq
+    cmds:
+      - until curl -sSf --retry 10 --retry-connrefused http://localhost:8080/apis/v2beta1/healthz | jq -e '.apiServerReady == true' ; do sleep 2 ; done
+
+  upload-pipeline:
+    desc: "Create a new pipeline or upload a new version if it doesn't exist"
+    internal: true
+    deps:
+      - task: tools:ensure-jq
+      - task: tools:ensure-kfp2
+    cmds:
+      - |
+        export PIPELINE_ID=$(kfp --endpoint http://localhost:8080/ --output=json pipeline list | jq -r '.[] | select(.display_name == "{{.VCLUSTER_NAME}}") | .pipeline_id')
+        if [[ -n "$PIPELINE_ID" ]]; then
+          until kfp --endpoint http://localhost:8080/ pipeline create-version -p $PIPELINE_ID -v $(git describe --always --long --tags --dirty) pipeline.yaml ; do sleep 2 ; done
+        else
+          until kfp --endpoint http://localhost:8080/ pipeline create --pipeline-name {{.VCLUSTER_NAME}} pipeline.yaml ; do sleep 2 ; done
+        fi
+

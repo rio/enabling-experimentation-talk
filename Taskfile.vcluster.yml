@@ -1,0 +1,56 @@
+# https://taskfile.dev
+
+version: '3'
+
+includes:
+  tools:
+    taskfile: Taskfile.tools.yml
+    internal: true
+
+vars:
+  DEFAULT_VCLUSTER_NAMESPACE: "gitlab"
+  VCLUSTER_NAME: '{{.VCLUSTER_NAME | default "test-cluster"}}'
+
+tasks:
+  list:
+    desc: "List all vclusters"
+    deps:
+      - task: tools:ensure-vcluster
+    cmds:
+      - vcluster list
+
+  create:
+    desc: "Start the vcluster"
+    deps:
+      - task: tools:ensure-vcluster
+    cmds:
+      - |
+        cat > /tmp/vcluster.yaml <<EOF
+        sync:
+          ingresses:
+            enabled: true
+        EOF
+      - vcluster create --namespace={{.DEFAULT_VCLUSTER_NAMESPACE}} --upgrade --connect=false --update-current=false -f /tmp/vcluster.yaml {{.VCLUSTER_NAME}}
+    status:
+      - vcluster list --namespace={{.DEFAULT_VCLUSTER_NAMESPACE}} | grep {{.VCLUSTER_NAME}}
+
+  connect:
+    desc: "Connect to the running vcluster"
+    deps:
+      - task: tools:ensure-vcluster
+    cmds:
+      - vcluster connect {{if .CI}}--server={{.VCLUSTER_NAME}}{{end}} --namespace={{.DEFAULT_VCLUSTER_NAMESPACE}} {{.VCLUSTER_NAME}}
+
+  disconnect:
+    desc: "Disconnect from the current vcluster"
+    deps:
+      - task: tools:ensure-vcluster
+    cmds:
+      - vcluster disconnect
+
+  delete:
+    desc: "Delete the vcluster"
+    deps:
+      - task: tools:ensure-vcluster
+    cmds:
+      - vcluster delete --namespace={{.DEFAULT_VCLUSTER_NAMESPACE}} {{.VCLUSTER_NAME}}

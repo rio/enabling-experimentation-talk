@@ -1,0 +1,94 @@
+# https://taskfile.dev
+
+version: '3'
+
+tasks:
+  ensure-kustomize:
+    silent: true
+    status:
+      - command -v kustomize
+    cmds:
+      - curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
+      - mv kustomize /usr/local/bin/
+
+  ensure-kubectl:
+    silent: true
+    status:
+      - command -v kubectl
+    cmds:
+      - curl -sSfLO "https://dl.k8s.io/release/$(curl -sSfL https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+      - chmod +x kubectl
+      - mv kubectl /usr/local/bin/
+
+  ensure-skaffold:
+    silent: true
+    status:
+      - command -v skaffold
+    cmds:
+      - curl -sSfLo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
+      - chmod +x skaffold
+      - mv skaffold /usr/local/bin/
+
+  ensure-helm:
+    silent: true
+    status:
+      - command -v helm
+    cmds:
+      - curl -sSfL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+  ensure-vcluster:
+    silent: true
+    status:
+      - command -v vcluster
+    cmds:
+      - curl -sSfLo vcluster "https://github.com/loft-sh/vcluster/releases/latest/download/vcluster-linux-amd64"
+      - chmod +x vcluster
+      - mv vcluster /usr/local/bin/
+
+  ensure-slides:
+    silent: true
+    status:
+      - test -f ./bin/slides
+    cmds:
+      - curl -sSfLo slides.tar.gz https://github.com/maaslalani/slides/releases/download/v0.9.0/slides_0.9.0_linux_amd64.tar.gz
+      - defer: rm slides.tar.gz
+      - tar xf slides.tar.gz slides
+      - mkdir -p ./bin/
+      - chmod +x slides
+      - mv slides ./bin/
+
+  ensure-gitea-remote:
+    silent: true
+    status:
+      - git remote -v | grep gitea
+    cmds:
+      - git remote add gitea http://root:demopassword@gitea.localhost/root/demo.git
+
+  ensure-gitlab-remote:
+    silent: true
+    status:
+      - git remote -v | grep gitlab
+    cmds:
+      - git remote add gitlab http://root:demopassword@gitlab.localhost/root/demo.git
+
+  ensure-jq:
+    silent: true
+    status:
+      - command -v jq
+    cmds:
+      - apt-get -qq update > /dev/null
+      - apt-get -qqy install jq > /dev/null
+
+  ensure-kfp2:
+    silent: true
+    status:
+      - command -v kfp
+    cmds:
+      - pip3 install --pre kfp > /dev/null
+
+  ensure-kfp1:
+    silent: true
+    status:
+      - command -v kfp
+    cmds:
+      - pip3 install kfp==1.8.20 > /dev/null

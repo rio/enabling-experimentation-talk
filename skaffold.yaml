@@ -1,10 +1,58 @@
 apiVersion: skaffold/v4beta4
 kind: Config
+metadata:
+  name: kuberay
 
-# manifests:
-#   kustomize:
-#     paths:
-#       - argocd
+deploy:
+  helm:
+    releases:
+      - name: kuberay-operator
+        remoteChart: kuberay-operator
+        repo: https://ray-project.github.io/kuberay-helm/
+        version: v0.5.0
+        namespace: kuberay
+        createNamespace: true
+        upgradeOnChange: true
+
+---
+
+apiVersion: skaffold/v4beta4
+kind: Config
+metadata:
+  name: kubeflow
+
+requires:
+  - configs: ["kubeflow-crds"]
+
+manifests:
+  kustomize:
+    paths:
+      - kubeflow/preview
+
+deploy:
+  statusCheck: false
+  kubectl: {}
+
+---
+
+apiVersion: skaffold/v4beta4
+kind: Config
+metadata:
+  name: kubeflow-crds
+
+manifests:
+  rawYaml:
+    - kubeflow/crds/*
+
+deploy:
+  kubectl: {}
+
+---
+
+apiVersion: skaffold/v4beta4
+kind: Config
+metadata:
+  name: gitea
 
 deploy:
   helm:
@@ -14,7 +62,73 @@ deploy:
         repo: https://dl.gitea.io/charts/
         namespace: gitea
         createNamespace: true
-        valuesFiles:
-          - values.yaml
+        upgradeOnChange: true
+        overrides:
+          gitea:
+            admin:
+              username: "root"
+              password: "demopassword"
+            config:
+              database:
+                DB_TYPE: sqlite3
+              cache:
+                ENABLED: false
+              repository:
+                DEFAULT_PUSH_CREATE_PRIVATE: false
+                ENABLE_PUSH_CREATE_USER: true
 
+          service:
+            http:
+              port: 80
+              clusterIP: 10.43.10.10
+
+          postgresql:
+            enabled: false
+
+          memcached:
+            enabled: false
+
+          ingress:
+            enabled: true
+            apiVersion: networking.k8s.io/v1
+            hosts:
+              - host: gitea.localhost
+                paths:
+                  - path: /
+                    pathType: Prefix
+
+---
+
+apiVersion: skaffold/v4beta4
+kind: Config
+metadata:
+  name: argocd
+
+manifests:
+  kustomize:
+    paths:
+      - argocd
+
+deploy:
+  kubectl: {}
+
+---
+
+apiVersion: skaffold/v4beta4
+kind: Config
+metadata:
+  name: argocd-apps
+
+requires:
+  - configs: ["argocd"]
+
+manifests:
+  rawYaml:
+    - argocd/app-of-apps.yaml
+  kustomize:
+    paths:
+      # contains preconfigured secret to make login easier during the demo
+      - gitlab
+
+deploy:
   kubectl: {}
