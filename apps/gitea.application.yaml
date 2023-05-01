@@ -16,10 +16,10 @@ spec:
   sources:
   - repoURL: https://dl.gitea.io/charts
     chart: gitea
+    targetRevision: 8.2.0
     helm:
       releaseName: gitea
       valueFiles:
         - $values/tasks/gitea.values.yaml
   - repoURL: http://gitea.localhost/root/demo.git
-    targetRevision: HEAD
     ref: value
