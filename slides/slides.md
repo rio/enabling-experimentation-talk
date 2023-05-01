@@ -164,7 +164,7 @@ Utilize ArgoCD to determine if new environments are requested based on Pull Requ
 ----
 
 ```
-~~~figlet -t -f slant
+~~~figlet -c -f slant
 Demo Time
 ~~~
 ```

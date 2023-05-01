@@ -55,7 +55,7 @@ tasks:
 
   ensure-slides:
     silent: true
-    dir: slides
+    dir: ../slides
     status:
       - test -f ./bin/slides
     cmds:
