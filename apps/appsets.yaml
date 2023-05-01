@@ -52,7 +52,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: kubflow-crds-preview
+  name: kubeflow-crds-preview
   namespace: argocd
 spec:
   generators:
@@ -87,7 +87,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: kubflow-preview
+  name: kubeflow-preview
   namespace: argocd
 spec:
   generators:
