@@ -1,0 +1,33 @@
+
+gitea:
+  admin:
+    username: "root"
+    password: "demopassword"
+  config:
+    database:
+      DB_TYPE: sqlite3
+    cache:
+      ENABLED: false
+    repository:
+      DEFAULT_PUSH_CREATE_PRIVATE: false
+      ENABLE_PUSH_CREATE_USER: true
+
+service:
+  http:
+    port: 80
+    clusterIP: 10.43.10.10
+
+postgresql:
+  enabled: false
+
+memcached:
+  enabled: false
+
+ingress:
+  enabled: true
+  apiVersion: networking.k8s.io/v1
+  hosts:
+    - host: gitea.localhost
+      paths:
+        - path: /
+          pathType: Prefix

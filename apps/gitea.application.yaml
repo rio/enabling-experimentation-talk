@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gitea
+  namespace: argocd
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: gitea
+  syncPolicy:
+    automated:
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
+  project: default
+  sources:
+  - repoURL: https://dl.gitea.io/charts
+    chart: gitea
+    helm:
+      releaseName: gitea
+      valueFiles:
+        - $values/tasks/gitea.values.yaml
+  - repoURL: http://gitea.localhost/root/demo.git
+    ref: value
