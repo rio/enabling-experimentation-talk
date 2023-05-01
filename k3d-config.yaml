@@ -1,25 +1,12 @@
 apiVersion: k3d.io/v1alpha4
 kind: Simple
 
-# Start a small 3 node cluster
-servers: 1
-agents: 2
-
-# Enable image caching for our nodes. The images are stored in named docker volumes.
+# enable caching for our node
 volumes:
 - volume: var-lib-rancher-k3s-server-0:/var/lib/rancher/k3s/agent/containerd
   nodeFilters:
   - server:0
-- volume: var-lib-rancher-k3s-node-0:/var/lib/rancher/k3s/agent/containerd
-  nodeFilters:
-  - agent:0
-- volume: var-lib-rancher-k3s-agent-1:/var/lib/rancher/k3s/agent/containerd
-  nodeFilters:
-  - agent:1
 
-# Forward the loadbalancer's ports to our machine's localhost.
-# This enables us to simply go to http://localhost and it will end up
-# in our Traefik ingress controller.
 ports:
   - port: 80:80
     nodeFilters:
@@ -28,10 +15,6 @@ ports:
     nodeFilters:
       - loadbalancer
 
-# Add a stable host alias to all our pods in the cluster.
-# Makes it possible to refer to our in-cluster gitea instance
-# from inside the cluster with the same hostname as we do outside
-# the cluster on our host machine.
 hostAliases:
   - ip: 10.43.10.10
     hostnames:
