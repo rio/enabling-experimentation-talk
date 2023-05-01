@@ -22,4 +22,4 @@ spec:
       valueFiles:
         - $values/tasks/gitea.values.yaml
   - repoURL: http://gitea.localhost/root/demo.git
-    ref: value
+    ref: values
