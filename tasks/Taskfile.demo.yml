@@ -17,7 +17,7 @@ tasks:
       - task: deploy-gitea
       - task: deploy-argocd
       # wait for argocd to deploy gitlab then wait for gitlab to wake up and push the repo
-      - until git push gitlab; do sleep 5; done
+      - until git push --tags gitlab main; do sleep 5; done
 
   down:
     desc: "Take down the cluster and everything in it"
@@ -40,7 +40,7 @@ tasks:
       - skaffold deploy -m gitea
       # push the current repo into gitea
       - kubectl wait --for=condition=ready pod -n gitea gitea-0 --timeout 300s
-      - until git push gitea; do sleep 5; done
+      - until git push --tags gitea main; do sleep 5; done
 
   deploy-argocd:
     internal: true
