@@ -98,10 +98,10 @@ JET + Fullstaq
 
 - `Ephemerality` is built into their design
 - Reasonably `fast` setup
-- They should encourage knowledge `reuse`
-- Effecient `resource` usage
-- `Auditable` access controls (API's / data / network)
 - As `isolated` as necessary
+- Effecient `resource` usage
+- They should encourage knowledge `reuse`
+- `Auditable` access controls (API's / data / network)
 
 ---
 
