@@ -183,3 +183,14 @@ Demo Time
 Questions?
 ~~~
 ```
+
+---
+
+# Checkout Erwin de Keijzer @ KubeCon EU 2023
+
+----
+```
+~~~qrencode -t utf8 -m 2 -l M
+https://youtu.be/6DFSDYQMRII
+~~~
+```
