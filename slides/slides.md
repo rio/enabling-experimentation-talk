@@ -1,5 +1,5 @@
 ---
-author: "Erwin de Keijzer / Rio Kierkels"
+author: "Rio Kierkels"
 paging: "%d/%d"
 theme: "theme.json"
 ---
@@ -20,7 +20,6 @@ Experimentation
 
 ```
 ~~~figlet -t -f slant
-Erwin de Keijzer
 Rio Kierkels
 ~~~
 ```
@@ -104,16 +103,15 @@ JET + Fullstaq
 
 ---
 
-#### Demo Time
+### Demo Time
 
 ---
 
-#### Thank You
+### Thank You
 
 ----
 > [Repository      ](https://github.com/rio/enabling-experimentation-talk)
 > [Rio Kierkels    ](r.kierkels@fullstaq.com)
-> [Erwin de Keijzer](e.dekeijzer@fullstaq.com)
 ----
 
 ```
