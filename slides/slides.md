@@ -15,7 +15,7 @@ Experimentation
 
 ---
 
-## Introduction
+# Introduction
 ----
 
 ```
@@ -25,19 +25,19 @@ Rio Kierkels
 ```
 ---
 
-## Introduction
+# Introduction
 
 ----
 
 ```
-~~~figlet -c -f slant
+~~~figlet -t -f slant
 JET + Fullstaq
 ~~~
 ```
 
 ---
 
-### The Goal
+# The Situation
 
 ----
 > I want to test out this new `<insert thing>`
@@ -55,7 +55,7 @@ JET + Fullstaq
 
 ---
 
-### The Requirements
+# The Requirements
 
 ----
 > I only need access to the production account.
@@ -71,7 +71,7 @@ JET + Fullstaq
 
 ---
 
-### The Problems
+# The Problems
 
 ----
 > The logging budget for `<insert env>` is gone again.
@@ -82,11 +82,13 @@ JET + Fullstaq
 - Experiment `reproducability`
 - Environment setup `slow`
 - Temporary environments are `idle` or `forgotten`
-- My computer is a `potato` (~~or an ARM Mac~~)
+- `GPU` requirements
+- Systems might have different `CPU architecture` (ARM Macs)
+- My computer is a `potato`
 
 ---
 
-### A Solution
+# A Solution
 
 ----
 
@@ -98,16 +100,78 @@ JET + Fullstaq
 - Reasonably `fast` setup
 - They should encourage knowledge `reuse`
 - Effecient `resource` usage
-- `Auditable` access controls
+- `Auditable` access controls (API's / data / network)
 - As `isolated` as necessary
 
 ---
 
-### Demo Time
+# The Tools
+
+----
+
+- **GitLab / Gitea**: Source code management
+- **Task**:           A task runner with some nice features
+- **Kubernetes**:     The workload orchestrator
+- **k9s**:            A terminal view into your Kubernetes cluster
+- **vcluster**:       I heard you like clusters, so I put some clusters in your clusters
+- **ArgoCD**:         GitOps: Declarative, versioned and continuously reconciled system state
+- **Kyverno**:        A rules engine and enforcer that integrates nicely with Kubernetes
 
 ---
 
-### Thank You
+# The Approaches (1/2)
+
+----
+## Imperative: Continuous Integration (CI)
+
+Utilize GitLab's CI system to provide on demand environments based on Merge Requests.
+
+### Advantages
+
+- Straight forward
+- A CI system is likely already in use
+
+### Disadvantages
+
+- Can be error prone, hard to ensure idempotency
+- Possibly tightly coupled to the SCM/CI system used
+
+---
+
+# The Approaches (2/2)
+
+----
+## Declarative: GitOps
+
+Utilize ArgoCD to determine if new environments are requested based on Pull Requests.
+
+### Advantages
+
+- Self-healing / continuously reconciled
+- Decoupled from SCM provider
+
+### Disadvantages
+
+- Possibly hard to debug without access to the systems
+- Relatively new paradigm
+
+---
+
+# Demo Time
+
+----
+> Demo Time
+----
+
+```
+~~~figlet -t -f slant
+Demo Time
+~~~
+```
+
+---
+
+# Thank You
 
 ----
 > [Repository      ](https://github.com/rio/enabling-experimentation-talk)
