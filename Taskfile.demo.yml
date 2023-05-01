@@ -50,8 +50,10 @@ tasks:
 
   slides:
     desc: "Start the slides"
+    dir: slides
     deps:
       - task: tools:ensure-slides
+      - task: tools:ensure-figlet
     cmds:
       - ./bin/slides slides.md
 

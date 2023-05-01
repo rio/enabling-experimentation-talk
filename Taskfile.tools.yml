@@ -45,8 +45,17 @@ tasks:
       - chmod +x vcluster
       - mv vcluster /usr/local/bin/
 
+  ensure-figlet:
+    silent: true
+    status:
+      - command -v figlet
+    cmds:
+      - sudo apt-get -qq update > /dev/null
+      - sudo apt-get -qqy install figlet > /dev/null
+
   ensure-slides:
     silent: true
+    dir: slides
     status:
       - test -f ./bin/slides
     cmds:

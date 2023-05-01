@@ -68,4 +68,3 @@ tasks:
       - kubectl port-forward -n kubeflow svc/ml-pipeline-ui 8080:80 &
       - task: kubeflow:wait-for-api
       - task: kubeflow:upload-pipeline
-
