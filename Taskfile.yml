@@ -34,7 +34,7 @@ tasks:
       - defer: { task: vcluster:disconnect }
 
       - task: kubeflow:set-domain
-      - cmd: skaffold deploy -m kubeflow
+      - cmd: skaffold deploy --status-check=false -m kubeflow
 
       # - cmd: kubectl wait --for=condition=established crds/rayjobs.ray.io
       # - cmd: kubectl apply -n kuberay -f https://github.com/ray-project/kuberay/raw/master/ray-operator/config/samples/ray_v1alpha1_rayjob.yaml
