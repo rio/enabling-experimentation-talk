@@ -21,4 +21,5 @@ spec:
       valueFiles:
         - $values/tasks/gitea.values.yaml
   - repoURL: http://gitea.localhost/root/demo.git
+    targetRevision: HEAD
     ref: value
