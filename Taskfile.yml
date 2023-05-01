@@ -9,13 +9,13 @@ set:
 
 includes:
   dev: .devcontainer
-  demo: Taskfile.demo.yml
-  kubeflow: Taskfile.kubeflow.yml
+  demo: ./tasks/Taskfile.demo.yml
+  kubeflow: ./tasks/Taskfile.kubeflow.yml
   vcluster: 
-    taskfile: Taskfile.vcluster.yml
+    taskfile: ./tasks/Taskfile.vcluster.yml
     internal: true
   tools: 
-    taskfile: Taskfile.tools.yml
+    taskfile: ./tasks/Taskfile.tools.yml
     internal: true
 
 tasks:
