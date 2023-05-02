@@ -25,7 +25,7 @@ Rio Kierkels
 ~~~
 ```
 - Film Visual Effects Background
-- Software/Infrastructure Engineer (10+ years already...)
+- Software/Infrastructure Engineer
 - Specialize in DevOps
 
 ---
@@ -67,12 +67,12 @@ JET + Fullstaq
 > It's just easier that way. You won't notice a thing, I promise.
 ----
 
-- Production-like `environment`
 - New `services`
 - Alternate `dependencies`
 - Specialized `hardware`
-- Specific `knowledge`
 - Data `access`
+- Production-like `environment`
+- Specific `knowledge`
 
 ---
 
@@ -83,13 +83,13 @@ JET + Fullstaq
 > Table tennis anyone?
 ----
 
-- Available environments are `shared` (disruptions / data / security)
-- Experiment `reproducability`
-- Environment setup `slow`
-- Temporary environments are `idle` or `forgotten`
+- My computer is a `potato`
 - `GPU` requirements
 - Systems might have different `CPU architecture` (ARM Macs)
-- My computer is a `potato`
+- Environment setup `slow`
+- Available environments are `shared` (disruptions / data / security)
+- Experiment `reproducability`
+- Temporary environments are `idle` or `forgotten`
 
 ---
 
@@ -103,24 +103,10 @@ JET + Fullstaq
 
 - `Ephemerality` is built into their design
 - Reasonably `fast` setup
-- As `isolated` as necessary
 - Effecient `resource` usage
-- They should encourage knowledge `reuse`
+- As `isolated` as necessary
 - `Auditable` access controls (API's / data / network)
-
----
-
-# The Tools
-
-----
-
-- **GitLab / Gitea**: Source code management
-- **Task**:           A task runner with some nice features
-- **Kubernetes**:     The workload orchestrator
-- **k9s**:            A terminal view into your Kubernetes cluster
-- **vcluster**:       I heard you like clusters, so I put some clusters in your clusters
-- **ArgoCD**:         GitOps: Declarative, versioned and continuously reconciled system state
-- **Kyverno**:        A rules engine and enforcer that integrates nicely with Kubernetes
+- They should encourage knowledge `reuse`
 
 ---
 
@@ -165,14 +151,17 @@ Utilize ArgoCD to determine if new environments are requested based on Pull Requ
 # Demo Time
 
 ----
-> Demo Time
+
+## The Tools
 ----
 
-```
-~~~figlet -c -f slant
-Demo Time
-~~~
-```
+- **GitLab / Gitea**: Source code management
+- **Task**:           A task runner with some nice features
+- **Kubernetes**:     The workload orchestrator
+- **k9s**:            A terminal view into your Kubernetes cluster
+- **vcluster**:       I heard you like clusters, so I put some clusters in your clusters
+- **ArgoCD**:         GitOps: Declarative, versioned and continuously reconciled system state
+- **Kyverno**:        A rules engine and enforcer that integrates nicely with Kubernetes
 
 ---
 
