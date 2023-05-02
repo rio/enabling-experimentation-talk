@@ -12,6 +12,7 @@ Enabling
 Experimentation
 ~~~
 ```
+Feat. kubeflow / kubernetes / vcluster / and more ...
 
 ---
 
@@ -23,6 +24,10 @@ Experimentation
 Rio Kierkels
 ~~~
 ```
+- Film Visual Effects Background
+- Software/Infrastructure Engineer (10+ years already...)
+- Specialize in DevOps
+
 ---
 
 # Introduction
