@@ -1,6 +1,6 @@
 {
 	"name": "tasker",
-	"image": "mcr.microsoft.com/devcontainers/base"
+	"image": "mcr.microsoft.com/devcontainers/base",
 
 	"features": {
 		"ghcr.io/rio/features/chezmoi": {},
