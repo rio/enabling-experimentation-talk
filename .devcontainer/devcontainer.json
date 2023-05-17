@@ -11,7 +11,7 @@
 		"ghcr.io/rio/features/vcluster": {},
 		"ghcr.io/devcontainers/features/docker-outside-of-docker": {},
 		"ghcr.io/devcontainers/features/kubectl-helm-minikube": {
-			"minikube": "none",
+			"minikube": "none"
 		},
 		"ghcr.io/eitsupi/devcontainer-features/go-task:1": {}
 	},
