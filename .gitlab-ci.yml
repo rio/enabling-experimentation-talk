@@ -8,7 +8,7 @@ workflow:
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
 
-image: python:3.9
+image: debian
 
 before_script:
   - |
@@ -30,29 +30,6 @@ create-env:
     VCLUSTER_NAME: $CI_ENVIRONMENT_SLUG
   script:
     - task create-env
-
-build-pipeline:
-  stage: build
-  needs: []
-  script:
-    - task build-pipeline
-  artifacts:
-    paths:
-      - pipeline.yaml
-
-deploy-pipeline:
-  stage: deploy
-  needs:
-    - build-pipeline
-    - create-env
-  environment:
-    name: preview/$CI_MERGE_REQUEST_IID-$CI_COMMIT_REF_SLUG
-    url: http://$CI_ENVIRONMENT_SLUG.localhost/
-    action: access
-  variables:
-    VCLUSTER_NAME: $CI_ENVIRONMENT_SLUG
-  script:
-    - task deploy-pipeline
 
 delete-env:
   stage: delete-env
