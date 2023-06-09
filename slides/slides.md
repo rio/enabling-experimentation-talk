@@ -3,7 +3,7 @@ author: "Rio Kierkels"
 paging: "%d/%d"
 theme: "theme.json"
 ---
-# JET Gigabites
+# Fullstaq Techcafe
 ----
 
 ```
@@ -12,7 +12,7 @@ Enabling
 Experimentation
 ~~~
 ```
-Feat. kubeflow / kubernetes / vcluster / and more ...
+Feat. kubernetes / vcluster / argocd / and more ...
 
 ---
 
@@ -26,37 +26,30 @@ Rio Kierkels
 ```
 - Film Visual Effects Background
 - Software/Infrastructure Engineer
-- Specialize in DevOps
-
----
-
-# Introduction
-
-----
-
-```
-~~~figlet -t -f slant
-JET + Fullstaq
-~~~
-```
+- Specialize in DevOps Practices
 
 ---
 
 # The Situation
 
 ----
-> I want to test out this new `<insert thing>`
+> I want to test out this `new thing` / `bug`
 > that `I found` / `I built` / `my boss wants me to use`.
 ----
 
-- Models
-- Training paradigms
-- Algorithms
+- Webservers
+- Reverse Proxies
+- Distributed Task Runners
+- Build System
+- ML Training Services
 - Datastores
+- Operators / Controllers
+- Development Environment
 - Libraries
-- Serving solutions
-- Observability tooling
-- Messaging queues
+- Virtualization Systems
+- Observability Tooling
+- Messaging Queues
+- ...
 
 ---
 
@@ -71,6 +64,7 @@ JET + Fullstaq
 - Alternate `dependencies`
 - Specialized `hardware`
 - Data `access`
+- Elevated `privileges`
 - Production-like `environment`
 - Specific `knowledge`
 
@@ -79,13 +73,13 @@ JET + Fullstaq
 # The Problems
 
 ----
-> The logging budget for `<insert env>` is gone again.
-> Table tennis anyone?
+> My computer is a `potato`.
 ----
 
-- My computer is a `potato`
-- `GPU` requirements
+- Windows
+- Locked down local systems
 - Systems might have different `CPU architecture` (ARM Macs)
+- Setup exceeds local system resources
 - Environment setup `slow`
 - Available environments are `shared` (disruptions / data / security)
 - Experiment `reproducability`
@@ -106,6 +100,7 @@ JET + Fullstaq
 - Effecient `resource` usage
 - As `isolated` as necessary
 - `Auditable` access controls (API's / data / network)
+- `tailored` to the persona
 - They should encourage knowledge `reuse`
 
 ---
@@ -121,10 +116,12 @@ Utilize GitLab's CI system to provide on demand environments based on Merge Requ
 
 - Straight forward
 - A CI system is likely already in use
+- Most people have at least heard the term
 
 ### Disadvantages
 
-- Can be error prone, hard to ensure idempotency
+- Error prone, hard to ensure idempotency
+- Can be very slow
 - Possibly tightly coupled to the SCM/CI system used
 
 ---
@@ -134,17 +131,19 @@ Utilize GitLab's CI system to provide on demand environments based on Merge Requ
 ----
 ## Declarative: GitOps
 
-Utilize ArgoCD to determine if new environments are requested based on Pull Requests.
+Utilize ArgoCD to provision new environments based on Pull Requests in Gitea.
 
 ### Advantages
 
 - Self-healing / continuously reconciled
 - Decoupled from SCM provider
+- Very reactive and fast
 
 ### Disadvantages
 
-- Possibly hard to debug without access to the systems
 - Relatively new paradigm
+- Current GitOps systems rely on lots more "newer" software
+- Possibly hard to debug without access to the systems
 
 ---
 
@@ -179,12 +178,3 @@ Questions?
 ```
 
 ---
-
-# Checkout Erwin de Keijzer @ KubeCon EU 2023
-
-----
-```
-~~~qrencode -t utf8 -m 2 -l M
-https://youtu.be/6DFSDYQMRII
-~~~
-```
