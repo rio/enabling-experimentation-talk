@@ -14,6 +14,12 @@ includes:
 
 tasks:
   set-domain:
+    internal: true
+    deps:
+      - task: set-kubeflow-domain
+      - task: set-boutique-domain
+
+  set-kubeflow-domain:
     desc: "Update the ingress host if the CI_ENVIRONMENT_URL environment variable is found"
     internal: true
     dir: kubeflow/preview
@@ -22,7 +28,18 @@ tasks:
     vars:
       KUBEFLOW_DOMAIN: '{{.CI_ENVIRONMENT_URL | default "" | trimPrefix "http://" | trimSuffix "/"}}'
     cmds:
-      - if [[ -n "{{.KUBEFLOW_DOMAIN}}" ]]; then kustomize edit set annotation preview/domain:"{{.KUBEFLOW_DOMAIN}}" ; fi
+      - if [[ -n "{{.KUBEFLOW_DOMAIN}}" ]]; then kustomize edit set annotation preview/domain:"kubeflow.{{.KUBEFLOW_DOMAIN}}" ; fi
+
+  set-boutique-domain:
+    desc: "Update the ingress host if the CI_ENVIRONMENT_URL environment variable is found"
+    internal: true
+    dir: boutique/preview
+    deps:
+      - task: tools:ensure-kustomize
+    vars:
+      BOUTIQUE_DOMAIN: '{{.CI_ENVIRONMENT_URL | default "" | trimPrefix "http://" | trimSuffix "/"}}'
+    cmds:
+      - if [[ -n "{{.BOUTIQUE_DOMAIN}}" ]]; then kustomize edit set annotation preview/domain:"boutique.{{.BOUTIQUE_DOMAIN}}" ; fi
 
   wait-for-api:
     internal: true
