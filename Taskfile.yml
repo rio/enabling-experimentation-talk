@@ -34,7 +34,7 @@ tasks:
       - defer: { task: vcluster:disconnect }
 
       - task: kubeflow:set-domain
-      - cmd: skaffold deploy --status-check=false -m kubeflow
+      - cmd: skaffold deploy --status-check=false -m boutique
 
       # - cmd: kubectl wait --for=condition=established crds/rayjobs.ray.io
       # - cmd: kubectl apply -n kuberay -f https://github.com/ray-project/kuberay/raw/master/ray-operator/config/samples/ray_v1alpha1_rayjob.yaml
@@ -49,22 +49,22 @@ tasks:
     cmds:
       - task: vcluster:delete 
 
-  build-pipeline:
-    desc: "Build a pipeline from python code"
-    deps:
-      - task: tools:ensure-kfp1
-    cmds:
-      - ./pipeline.py
+  # build-pipeline:
+  #   desc: "Build a pipeline from python code"
+  #   deps:
+  #     - task: tools:ensure-kfp1
+  #   cmds:
+  #     - ./pipeline.py
 
-  deploy-pipeline:
-    deps:
-      - task: tools:ensure-kubectl
-    preconditions:
-      - sh: test -n "{{.VCLUSTER_NAME}}"
-        msg: "missing VCLUSTER_NAME environment variable"
-    cmds:
-      - task: vcluster:connect
-      - defer: { task: vcluster:disconnect }
-      - kubectl port-forward -n kubeflow svc/ml-pipeline-ui 8080:80 &
-      - task: kubeflow:wait-for-api
-      - task: kubeflow:upload-pipeline
+  # deploy-pipeline:
+  #   deps:
+  #     - task: tools:ensure-kubectl
+  #   preconditions:
+  #     - sh: test -n "{{.VCLUSTER_NAME}}"
+  #       msg: "missing VCLUSTER_NAME environment variable"
+  #   cmds:
+  #     - task: vcluster:connect
+  #     - defer: { task: vcluster:disconnect }
+  #     - kubectl port-forward -n kubeflow svc/ml-pipeline-ui 8080:80 &
+  #     - task: kubeflow:wait-for-api
+  #     - task: kubeflow:upload-pipeline
