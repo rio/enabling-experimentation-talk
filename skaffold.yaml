@@ -107,21 +107,6 @@ deploy:
 apiVersion: skaffold/v4beta4
 kind: Config
 metadata:
-  name: boutique
-
-manifests:
-  kustomize:
-    paths:
-      - boutique/preview
-
-deploy:
-  kubectl: {}
-
----
-
-apiVersion: skaffold/v4beta4
-kind: Config
-metadata:
   name: linkerd
 
 requires:
