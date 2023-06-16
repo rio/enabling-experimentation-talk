@@ -1,18 +1,17 @@
 apiVersion: skaffold/v4beta4
 kind: Config
 metadata:
-  name: kuberay
+  name: opentelemetry-demo
+
+manifests:
+  kustomize:
+    paths:
+      - opentelemetry-demo/preview
 
 deploy:
-  helm:
-    releases:
-      - name: kuberay-operator
-        remoteChart: kuberay-operator
-        repo: https://ray-project.github.io/kuberay-helm/
-        version: v0.5.0
-        namespace: kuberay
-        createNamespace: true
-        upgradeOnChange: true
+  statusCheckDeadlineSeconds: 300
+  tolerateFailuresUntilDeadline: true
+  kubectl: {}
 
 ---
 
@@ -98,21 +97,6 @@ manifests:
     paths:
       # contains preconfigured secret to make login easier during the demo
       - gitlab
-
-deploy:
-  kubectl: {}
-
----
-
-apiVersion: skaffold/v4beta4
-kind: Config
-metadata:
-  name: boutique
-
-manifests:
-  kustomize:
-    paths:
-      - boutique/preview
 
 deploy:
   kubectl: {}

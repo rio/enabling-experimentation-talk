@@ -38,6 +38,7 @@ spec:
             syncer:
               extraArgs:
                 - --out-kube-config-secret=pr-{{number}}-{{branch_slug}}
+                - --tls-san=pr-{{number}-{{branch_slug}}
 
       project: default
       destination:
@@ -46,13 +47,13 @@ spec:
       syncPolicy:
         automated:
           prune: true
- 
+
 ---
- 
+
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: boutique-preview
+  name: otel-demo-preview
   namespace: argocd
 spec:
   generators:
@@ -62,13 +63,13 @@ spec:
             argocd.argoproj.io/secret-type: cluster
   template:
     metadata:
-      name: 'boutique-preview-{{nameNormalized}}'
+      name: 'otel-demo-preview-{{nameNormalized}}'
       labels:
         preview/env: '{{metadata.labels.preview/env}}'
     spec:
       source:
         repoURL: http://gitea.localhost/root/demo.git
-        path: boutique/preview
+        path: opentelemetry-demo/preview
         targetRevision: '{{metadata.annotations.git/sha}}'
         kustomize:
           commonAnnotations:
@@ -76,7 +77,7 @@ spec:
       project: default
       destination:
         server: '{{server}}'
-        namespace: boutique
+        namespace: otel-demo
       syncPolicy:
         automated:
           prune: true

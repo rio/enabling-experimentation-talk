@@ -1,15 +1,15 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: boutique
+  name: otel-demo
 spec:
   rules:
   - http:
       paths:
       - backend:
           service:
-            name: frontend
+            name: opentelemetry-demo-frontendproxy
             port:
-              number: 80
+              number: 8080
         path: /
         pathType: Prefix
