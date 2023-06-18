@@ -114,7 +114,7 @@ Utilize GitLab's CI system to provide on demand environments based on Merge Requ
 
 ### Advantages
 
-- Straight forward
+- Straightforward
 - A CI system is likely already in use
 - Most people have at least heard the term
 
