@@ -16,7 +16,7 @@ spec:
   source:
     repoURL: https://charts.gitlab.io/
     chart: gitlab
-    targetRevision: v6.11.0
+    targetRevision: v6.11.9
     helm:
       releaseName: gitlab
       values: |
