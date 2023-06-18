@@ -124,9 +124,27 @@ Utilize GitLab's CI system to provide on demand environments based on Merge Requ
 
 ---
 
+# Imperative Demo
+
+----
+
+## The Tools
+
+- **GitLab**:         Source code management
+- **GitLab CI**:      GitLab's built in pipeline runner
+- **Task**:           A task runner with some nice features
+
+### Orchestration
+
+- **Kubernetes**:     The container workload orchestrator
+- **vcluster**:       I heard you like clusters, so I put some clusters in your clusters
+
+---
+
 # The Approaches (2/2)
 
 ----
+
 ## Declarative: GitOps
 
 Utilize ArgoCD to provision new environments based on Pull Requests in Gitea.
@@ -145,20 +163,20 @@ Utilize ArgoCD to provision new environments based on Pull Requests in Gitea.
 
 ---
 
-# Demo Time
+# Declarative Demo
 
 ----
 
 ## The Tools
-----
 
-- **GitLab / Gitea**: Source code management
-- **Task**:           A task runner with some nice features
-- **Kubernetes**:     The workload orchestrator
-- **k9s**:            A terminal view into your Kubernetes cluster
-- **vcluster**:       I heard you like clusters, so I put some clusters in your clusters
+- **Gitea**:          Light weight source code management
 - **ArgoCD**:         GitOps: Declarative, versioned and continuously reconciled system state
 - **Kyverno**:        A rules engine and enforcer that integrates nicely with Kubernetes
+
+### Orchestration
+
+- **Kubernetes**:     The container workload orchestrator
+- **vcluster**:       I heard you like clusters, so I put some clusters in your clusters
 
 ---
 
