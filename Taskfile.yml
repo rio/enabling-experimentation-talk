@@ -50,6 +50,7 @@ tasks:
 
       - task: set-domain
         vars:
+          PREVIEW_DOMAIN: '{{.PREVIEW_DOMAIN | default "otel-demo.localhost"}}'
           PREVIEW_ENVIRONMENT_PATH: opentelemetry-demo/preview
 
       - cmd: skaffold deploy --status-check=false -m opentelemetry-demo
@@ -60,7 +61,8 @@ tasks:
       - task: tools:ensure-kustomize
     dir: "{{.PREVIEW_ENVIRONMENT_PATH}}"
     preconditions:
-      - test -n "{{.PREVIEW_DOMAIN}}"
-      - test -n "{{.PREVIEW_ENVIRONMENT_PATH}}"
+      - sh: test -n "{{.PREVIEW_DOMAIN}}"
+        msg: Please set the PREVIEW_DOMAIN variable.
+      - sh: test -n "{{.PREVIEW_ENVIRONMENT_PATH}}"
     cmds:
       - kustomize edit set annotation preview/domain:"{{.PREVIEW_DOMAIN}}"
