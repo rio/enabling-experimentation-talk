@@ -20,7 +20,6 @@ before_script:
 variables:
   VCLUSTER_NAME: $CI_ENVIRONMENT_SLUG
   PREVIEW_DOMAIN: $CI_ENVIRONMENT_URL
-  GIT_SUBMODULE_STRATEGY: normal
 
 create-env:
   stage: create-env
