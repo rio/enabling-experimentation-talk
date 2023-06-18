@@ -54,6 +54,7 @@ tasks:
     deps:
       - task: tools:ensure-slides
       - task: tools:ensure-figlet
+      - task: tools:ensure-qrencode
     cmds:
       - ./bin/slides slides.md
 

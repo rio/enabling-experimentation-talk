@@ -53,6 +53,14 @@ tasks:
       - sudo apt-get -qq update > /dev/null
       - sudo apt-get -qqy install figlet > /dev/null
 
+  ensure-qrencode:
+    silent: true
+    status:
+      - command -v qrencode
+    cmds:
+      - sudo apt-get -qq update > /dev/null
+      - sudo apt-get -qqy install qrencode > /dev/null
+
   ensure-slides:
     silent: true
     dir: ../slides

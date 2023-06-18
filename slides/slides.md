@@ -3,7 +3,7 @@ author: "Rio Kierkels"
 paging: "%d/%d"
 theme: "theme.json"
 ---
-# Fullstaq Techcafe
+# DevOps & Cloud Native Storytelling
 ----
 
 ```
@@ -24,7 +24,7 @@ Feat. kubernetes / vcluster / argocd / and more ...
 Rio Kierkels
 ~~~
 ```
-- Film Visual Effects Background
+- Visual Effects Background
 - Software/Infrastructure Engineer
 - Specialize in DevOps Practices
 
@@ -38,13 +38,11 @@ Rio Kierkels
 ----
 
 - Webservers
-- Reverse Proxies
 - Distributed Task Runners
-- Build System
+- Build Systems
 - ML Training Services
 - Datastores
 - Operators / Controllers
-- Development Environment
 - Libraries
 - Virtualization Systems
 - Observability Tooling
@@ -178,3 +176,11 @@ Questions?
 ```
 
 ---
+
+# GitHub Code Repo QR Code
+
+```
+~~~qrencode -m 2 -t UTF8
+https://github.com/rio/enabling-experimentation-talk
+~~~
+```
