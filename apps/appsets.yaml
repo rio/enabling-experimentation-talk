@@ -70,7 +70,7 @@ spec:
       source:
         repoURL: http://gitea.localhost/root/demo.git
         path: opentelemetry-demo/preview
-        targetRevision: '{{metadata.annotations.git/sha}}'
+        targetRevision: '{{metadata.annotations.git/branch}}'
         kustomize:
           commonAnnotations:
             preview/domain: '{{nameNormalized}}.localhost'
