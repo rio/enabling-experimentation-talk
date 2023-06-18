@@ -8,6 +8,16 @@ resources:
 - namespace.yaml
 - ingress.yaml
 
+replicas:
+- name: opentelemetry-demo-productcatalogservice
+  count: 1
+
+# we're not using these currently
+- name: opentelemetry-demo-grafana
+  count: 0
+- name: opentelemetry-demo-prometheus-server
+  count: 0
+
 patches:
 - patch: |
     apiVersion: v1
