@@ -8,9 +8,6 @@ resources:
 - namespace.yaml
 - ingress.yaml
 
-commonAnnotations:
-  preview/domain: otel-demo.localhost
-
 patches:
 - patch: |
     apiVersion: v1

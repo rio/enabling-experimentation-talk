@@ -1,6 +1,5 @@
 stages:
   - create-env
-  - build
   - deploy
   - delete-env
 
