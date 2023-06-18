@@ -5,6 +5,9 @@ resources:
 - ../base
 - ingress.yaml
 
+commonAnnotations:
+  preview/domain: kubeflow.localhost
+
 replacements:
 - source:
     fieldPath: metadata.annotations.preview/domain
