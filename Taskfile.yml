@@ -42,8 +42,6 @@ tasks:
       - task: tools:ensure-helm
       - task: tools:ensure-kustomize
       - task: tools:ensure-skaffold
-    env:
-      SKAFFOLD_LABEL: skaffold.dev/run-id=identifier-to-make-less-skaffold-idempotent
     cmds:
       - task: vcluster:connect
       - defer: { task: vcluster:disconnect }

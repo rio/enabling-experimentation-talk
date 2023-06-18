@@ -35,13 +35,13 @@ create-env:
     paths:
       - kubeconfig.yaml
 
-deploy-app:
-  stage: deploy
-  environment:
-    name: preview/$CI_MERGE_REQUEST_IID-$CI_COMMIT_REF_SLUG
-    action: prepare
-  script:
-    - task deploy-app
+# deploy-app:
+#   stage: deploy
+#   environment:
+#     name: preview/$CI_MERGE_REQUEST_IID-$CI_COMMIT_REF_SLUG
+#     action: prepare
+#   script:
+#     - task deploy-app
 
 delete-env:
   stage: delete-env
