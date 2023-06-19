@@ -3,7 +3,7 @@ author: "Rio Kierkels"
 paging: "%d/%d"
 theme: "theme.json"
 ---
-# DevOps & Cloud Native Storytelling
+# Cloud Native & Kubernetes
 ----
 
 ```
