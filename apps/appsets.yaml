@@ -38,7 +38,7 @@ spec:
             syncer:
               extraArgs:
                 - --out-kube-config-secret=pr-{{number}}-{{branch_slug}}
-                - --tls-san=pr-{{number}-{{branch_slug}}.vcluster.localhost
+                - --tls-san="pr-{{number}}-{{branch_slug}}.vcluster.localhost"
 
       project: default
       destination:
