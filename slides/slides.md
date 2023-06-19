@@ -54,8 +54,7 @@ Rio Kierkels
 # The Requirements
 
 ----
-> I only need access to the production account.
-> It's just easier that way. You won't notice a thing, I promise.
+> So you `"just need admin access"` on production, huh?
 ----
 
 - New `services`
@@ -68,16 +67,25 @@ Rio Kierkels
 
 ---
 
-# The Problems
+# The Local Problems
 
 ----
 > My computer is a `potato`.
 ----
 
-- Windows
-- Locked down local systems
+- Wrong `operating system`
 - Systems might have different `CPU architecture` (ARM Macs)
-- Setup exceeds local system resources
+- Restricted local `system access`
+- Setup exceeds local `system resources`
+
+---
+
+# The Remote Problems
+
+----
+> What do you mean you `"didn't think anyone was using it"`!?
+----
+
 - Environment setup `slow`
 - Available environments are `shared` (disruptions / data / security)
 - Experiment `reproducability`
@@ -85,13 +93,11 @@ Rio Kierkels
 
 ---
 
-# A Solution
+# Ephemeral Environments
 
 ----
 
-> **Ephemeral Environments**
-
-----
+## Desired Properties
 
 - `Ephemerality` is built into their design
 - Reasonably `fast` setup
