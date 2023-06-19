@@ -26,7 +26,7 @@ spec:
       source:
         repoURL: https://charts.loft.sh
         chart: vcluster
-        targetRevision: v0.15.0
+        targetRevision: v0.15.2
         helm:
           releaseName: pr-{{number}}-{{branch_slug}}
           values: |
