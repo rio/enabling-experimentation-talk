@@ -30,40 +30,20 @@ Rio Kierkels
 
 ---
 
-# The Situation
+# The Requirements
 
 ----
 > I want to test out this `new thing` / `bug`
 > that `I found` / `I built` / `my boss wants me to use`.
 ----
 
-- Webservers
-- Distributed Task Runners
-- Build Systems
-- ML Training Services
-- Datastores
-- Operators / Controllers
-- Libraries
-- Virtualization Systems
-- Observability Tooling
-- Messaging Queues
-- ...
-
----
-
-# The Requirements
-
-----
-> So you `"just need admin access"` on production, huh?
-----
-
-- New `services`
-- Alternate `dependencies`
-- Specialized `hardware`
-- Data `access`
-- Elevated `privileges`
-- Production-like `environment`
-- Specific `knowledge`
+- `services`
+- `dependencies`
+- `hardware`
+- `data access`
+- `privileges`
+- `production-like`
+- `knowledge`
 
 ---
 
