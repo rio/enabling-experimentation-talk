@@ -116,6 +116,13 @@ Utilize GitLab's CI system to provide on demand environments based on Merge Requ
 
 ---
 
+```
+~~~figlet -c -f slant
+Your Implementation May Vary
+~~~
+```
+---
+
 # [15:00] Imperative Demo
 
 ----
