@@ -1,0 +1,15 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: podinfo
+spec:
+  rules:
+  - http:
+      paths:
+      - backend:
+          service:
+            name: podinfo
+            port:
+              number: 9898
+        path: /
+        pathType: Prefix
