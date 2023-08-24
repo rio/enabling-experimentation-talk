@@ -1,56 +1,6 @@
 apiVersion: skaffold/v4beta4
 kind: Config
 metadata:
-  name: opentelemetry-demo
-
-manifests:
-  kustomize:
-    paths:
-      - opentelemetry-demo/preview
-
-deploy:
-  statusCheckDeadlineSeconds: 300
-  tolerateFailuresUntilDeadline: true
-  kubectl: {}
-
----
-
-apiVersion: skaffold/v4beta4
-kind: Config
-metadata:
-  name: kubeflow
-
-requires:
-  - configs: ["kubeflow-crds"]
-
-manifests:
-  kustomize:
-    paths:
-      - kubeflow/preview
-
-deploy:
-  statusCheck: false
-  kubectl: {}
-
----
-
-apiVersion: skaffold/v4beta4
-kind: Config
-metadata:
-  name: kubeflow-crds
-
-manifests:
-  rawYaml:
-    - kubeflow/crds/*
-
-deploy:
-  kubectl: {}
-
----
-
-apiVersion: skaffold/v4beta4
-kind: Config
-metadata:
   name: gitea
 
 deploy:

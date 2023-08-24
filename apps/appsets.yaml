@@ -53,7 +53,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: otel-demo-preview
+  name: podinfo-preview
   namespace: argocd
 spec:
   generators:
@@ -63,13 +63,13 @@ spec:
             argocd.argoproj.io/secret-type: cluster
   template:
     metadata:
-      name: 'otel-demo-preview-{{nameNormalized}}'
+      name: 'podinfo-preview-{{nameNormalized}}'
       labels:
         preview/env: '{{metadata.labels.preview/env}}'
     spec:
       source:
         repoURL: http://gitea.localhost/root/demo.git
-        path: opentelemetry-demo/preview
+        path: podinfo/preview
         targetRevision: '{{metadata.annotations.git/branch}}'
         kustomize:
           commonAnnotations:
@@ -77,7 +77,7 @@ spec:
       project: default
       destination:
         server: '{{server}}'
-        namespace: otel-demo
+        namespace: podinfo
       syncPolicy:
         automated:
           prune: true

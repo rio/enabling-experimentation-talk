@@ -10,6 +10,7 @@ spec:
   source:
     path: apps
     repoURL: http://gitea.localhost/root/demo.git
+    targetRevision: workshop
   syncPolicy:
     automated:
       prune: true

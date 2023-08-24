@@ -1,6 +1,0 @@
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-
-resources:
-# - upstream/kubernetes/opentelemetry-demo.yaml # when using the submodule
-- https://github.com/open-telemetry/opentelemetry-demo/raw/main/kubernetes/opentelemetry-demo.yaml
