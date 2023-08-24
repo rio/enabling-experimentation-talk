@@ -86,3 +86,55 @@ spec:
           backoff:
             duration: 5s
             maxDuration: 10s
+
+---
+
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: code-server
+  namespace: argocd
+spec:
+  generators:
+    - clusters:
+        selector:
+          matchLabels:
+            argocd.argoproj.io/secret-type: cluster
+  template:
+    metadata:
+      name: 'code-server-{{nameNormalized}}'
+      labels:
+        preview/env: '{{metadata.labels.preview/env}}'
+    spec:
+      project: default
+      destination:
+        server: '{{server}}'
+        namespace: code-server
+      syncPolicy:
+        automated:
+          prune: true
+        retry:
+          limit: -1
+          backoff:
+            duration: 5s
+            maxDuration: 10s
+        syncOptions:
+          - CreateNamespace=true
+      sources:
+        - repoURL: https://github.com/coder/code-server
+          path: ci/helm-chart
+          targetRevision: v4.16.1
+          helm:
+            releaseName: code-server
+            values: |
+              ingress:
+                enabled: true
+                hosts:
+                  - host: 'code.{{nameNormalized}}.localhost'
+                    paths:
+                      - /
+              persistence:
+                enabled: false
+              extraVars:
+                - name: DISABLE_TELEMETRY
+                  value: 'true'
