@@ -140,6 +140,7 @@ spec:
           helm:
             releaseName: code-server
             values: |
+              password: '{{metadata.annotations.git/sha}}'
               ingress:
                 enabled: true
                 hosts:
