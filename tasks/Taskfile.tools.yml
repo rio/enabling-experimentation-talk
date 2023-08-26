@@ -88,13 +88,6 @@ tasks:
     cmds:
       - git remote add gitea http://root:demopassword@gitea.localhost/root/demo.git
 
-  ensure-gitlab-remote:
-    silent: true
-    status:
-      - git remote -v | grep gitlab
-    cmds:
-      - git remote add gitlab http://root:demopassword@gitlab.localhost/root/demo.git
-
   ensure-jq:
     silent: true
     status:

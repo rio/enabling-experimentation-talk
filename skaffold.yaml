@@ -44,10 +44,6 @@ requires:
 manifests:
   rawYaml:
     - argocd/app-of-apps.yaml
-  kustomize:
-    paths:
-      # contains preconfigured secret to make login easier during the demo
-      - gitlab
 
 deploy:
   kubectl: {}

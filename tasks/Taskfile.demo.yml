@@ -12,12 +12,9 @@ tasks:
     desc: "Setup the demo"
     cmds:
       - task: tools:ensure-gitea-remote
-      - task: tools:ensure-gitlab-remote
       - task: create
       - task: deploy-gitea
       - task: deploy-argocd
-      # wait for argocd to deploy gitlab then wait for gitlab to wake up and push the repo
-      - until git push --tags gitlab main; do sleep 5; done
 
   down:
     desc: "Take down the cluster and everything in it"

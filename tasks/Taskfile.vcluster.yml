@@ -8,7 +8,6 @@ includes:
     internal: true
 
 vars:
-  DEFAULT_VCLUSTER_NAMESPACE: "gitlab"
   VCLUSTER_NAME: '{{.VCLUSTER_NAME | default "test-cluster"}}'
   VCLUSTER_SAN: '{{.VCLUSTER_NAME}}.vcluster.localhost'
 
@@ -37,7 +36,6 @@ tasks:
 
       - |
         vcluster create {{.VCLUSTER_NAME}} \
-          --namespace={{.DEFAULT_VCLUSTER_NAMESPACE}} \
           --upgrade \
           --connect=false \
           --update-current=false \
