@@ -30,8 +30,6 @@ spec:
         helm:
           releaseName: pr-{{number}}-{{branch_slug}}
           values: |
-            isolation:
-              enabled: true
             sync:
               ingresses:
                 enabled: true

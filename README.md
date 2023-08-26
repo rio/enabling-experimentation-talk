@@ -19,3 +19,6 @@ kubectl config set-credentials cluster-admin --token=$(cat /var/run/secrets/kube
 kubectl config set-context vcluster-admin --cluster=vcluster --user=cluster-admin
 kubectl config use-context vcluster-admin
 ```
+
+https://dl.k8s.io/v1.28.1/bin/linux/amd64/kubectl
+https://github.com/linkerd/linkerd2/releases/download/stable-2.14.0/linkerd2-cli-stable-2.14.0-linux-amd64
