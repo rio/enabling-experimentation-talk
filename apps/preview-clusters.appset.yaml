@@ -1,0 +1,64 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: preview-clusters
+  namespace: argocd
+spec:
+  generators:
+    - pullRequest:
+        gitea:
+          owner: root
+          repo: demo
+          api: http://gitea.localhost/
+          insecure: true
+        requeueAfterSeconds: 5
+  template:
+    metadata:
+      name: 'pr-{{number}}-{{branch_slug}}'
+      labels:
+        preview/env: 'pr-{{number}}-{{branch_slug}}'
+      annotations:
+        git/sha: '{{head_sha}}'
+        git/branch: '{{branch}}'
+        scm/pull-request: '{{number}}'
+        scm/branch_slug: '{{branch_slug}}'
+    spec:
+      source:
+        repoURL: https://charts.loft.sh
+        chart: vcluster
+        targetRevision: v0.15.7
+        helm:
+          releaseName: pr-{{number}}-{{branch_slug}}
+          values: |
+            sync:
+              ingresses:
+                enabled: true
+            storage:
+              persistence: false
+            syncer:
+              extraArgs:
+                - --out-kube-config-secret=pr-{{number}}-{{branch_slug}}
+            init:
+              manifests: |-
+                apiVersion: rbac.authorization.k8s.io/v1
+                kind: ClusterRoleBinding
+                metadata:
+                  name: code-server-admin
+                roleRef:
+                  apiGroup: rbac.authorization.k8s.io
+                  kind: ClusterRole
+                  name: cluster-admin
+                subjects:
+                - kind: ServiceAccount
+                  name: code-server
+                  namespace: code-server
+
+      project: default
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: vclusters
+      syncPolicy:
+        automated:
+          prune: true
+        syncOptions:
+          - CreateNamespace=true
