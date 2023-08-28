@@ -12,6 +12,13 @@ spec:
           api: http://gitea.localhost/
           insecure: true
         requeueAfterSeconds: 5
+    - pullRequest:
+        github:
+          owner: rio
+          repo: enabling-experimentation-workshop
+          tokenRef:
+            key: password
+            secretName: github-app-credentials
   template:
     metadata:
       name: 'pr-{{number}}-{{branch_slug}}'
@@ -21,7 +28,7 @@ spec:
         git/sha: '{{head_sha}}'
         git/branch: '{{branch}}'
         scm/pull-request: '{{number}}'
-        scm/branch_slug: '{{branch_slug}}'
+        scm/branch-slug: '{{branch_slug}}'
     spec:
       source:
         repoURL: https://charts.loft.sh
@@ -30,6 +37,11 @@ spec:
         helm:
           releaseName: pr-{{number}}-{{branch_slug}}
           values: |
+            globalAnnotations:
+              git/branch: '{{branch}}'
+              git/sha: '{{head_sha}}'
+              scm/branch-slug: '{{branch_slug}}'
+              scm/pull-request: '{{number}}'
             sync:
               ingresses:
                 enabled: true
