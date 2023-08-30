@@ -13,7 +13,8 @@ resources:
 # https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 - install.yaml
 - ingress.yaml
-- repository.yaml
+- gitea.repository.yaml
+- github.repository.yaml
 
 configMapGenerator:
   - name: argocd-cmd-params-cm
