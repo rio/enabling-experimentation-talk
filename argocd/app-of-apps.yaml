@@ -9,8 +9,8 @@ spec:
   project: default
   source:
     path: apps
-    repoURL: http://gitea.localhost/root/demo.git
-    targetRevision: workshop
+    repoURL: https://github.com/rio/enabling-experimentation-workshop.git
+    targetRevision: main
   syncPolicy:
     automated:
       prune: true
