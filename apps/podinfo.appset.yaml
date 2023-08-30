@@ -3,6 +3,8 @@ kind: ApplicationSet
 metadata:
   name: podinfo-preview
   namespace: argocd
+  annotations:
+    notifications.argoproj.io/subscribe.on-sync-succeeded.github: ""
 spec:
   generators:
     - clusters:
