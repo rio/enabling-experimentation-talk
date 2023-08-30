@@ -18,7 +18,7 @@ spec:
         preview/env: '{{metadata.labels.preview/env}}'
     spec:
       source:
-        repoURL: http://gitea.localhost/root/demo.git
+        repoURL: https://github.com/rio/enabling-experimentation-workshop.git
         path: podinfo/preview
         targetRevision: '{{metadata.annotations.git/branch}}'
         kustomize:
