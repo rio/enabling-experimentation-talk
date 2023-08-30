@@ -15,7 +15,7 @@ spec:
       labels:
         preview/env: '{{metadata.labels.preview/env}}'
       annotations:
-        notifications.argoproj.io/subscribe.on-sync-succeeded.github: ""
+        notifications.argoproj.io/subscribe.on-sync-succeeded.github: "app-deployed"
     spec:
       source:
         repoURL: https://github.com/rio/enabling-experimentation-workshop.git
