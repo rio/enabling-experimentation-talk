@@ -16,6 +16,9 @@ resources:
 - gitea.repository.yaml
 - github.repository.yaml
 
+patches:
+  - path: argocd-notifications.configmap.yaml
+
 configMapGenerator:
   - name: argocd-cmd-params-cm
     behavior: merge
