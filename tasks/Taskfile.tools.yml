@@ -9,6 +9,7 @@ tasks:
       - task: ensure-kubectl
       - task: ensure-vcluster
       - task: ensure-linkerd
+      - task: symlink
 
   symlink:
     cmds:
