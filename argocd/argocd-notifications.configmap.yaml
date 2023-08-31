@@ -32,7 +32,7 @@ data:
         state: pending
         label: "app/{{.app.metadata.name}}"
 
-  template.app-created: |
+  template.app-syncing: |
     message: |
       Application is syncing.
     github:
