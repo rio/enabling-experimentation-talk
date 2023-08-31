@@ -7,8 +7,8 @@ data:
     previewDomain: edgecase.rio.wtf
 
   service.github: |
-    appID: $github-app-id
-    installationID: $github-installation-id
+    appID: 383353
+    installationID: 41276697
     privateKey: $github-private-key
 
   template.app-deployed: |
