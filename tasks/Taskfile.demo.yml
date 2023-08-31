@@ -15,6 +15,8 @@ tasks:
       - task: create
       - task: deploy-gitea
       - task: deploy-argocd
+      - task: setup-github-secrets
+      - task: setup-cloudflare-secrets
 
   down:
     desc: "Take down the cluster and everything in it"
@@ -55,16 +57,15 @@ tasks:
       - kubectl wait --for condition=established crds/applications.argoproj.io --timeout 300s
       - kubectl apply -f argocd/app-of-apps.yaml
 
-  setup-secrets:
+  setup-github-secrets:
     internal: false
-    desc: Setup secrets used by ArgoCD to access github and cloudflare's secrets.
+    desc: Setup secrets used by ArgoCD to access github.
     requires:
       vars:
         - GITHUB_APP_ID
         - GITHUB_APP_INSTALLATION_ID
         - GITHUB_APP_PRIVATE_KEY_FILE
         - GITHUB_REPO
-        - CLOUDFLARE_CREDENTIALS_FILE
     cmds:
       - |
         kubectl -n argocd create secret generic github-credentials \
@@ -76,7 +77,15 @@ tasks:
 
       - kubectl -n argocd label secret github-credentials argocd.argoproj.io/secret-type=repo-creds
 
-      - kubectl create secret generic tunnel-credentials -n cloudflared --from-file=credentials.json={{.CLOUDFLARE_CREDENTIALS_FILE}}
+  setup-cloudflare-secrets:
+    internal: false
+    desc: Setup secrets used by cloudflare to provide a tunnel.
+    requires:
+      vars:
+        - CLOUDFLARE_CREDENTIALS_FILE
+    cmds:
+      - until kubectl get ns cloudflare; do sleep 2; done
+      - kubectl create secret generic tunnel-credentials -n cloudflare --from-file=credentials.json={{.CLOUDFLARE_CREDENTIALS_FILE}}
 
   slides:
     desc: "Start the slides"
