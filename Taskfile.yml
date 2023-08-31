@@ -47,3 +47,12 @@ tasks:
     cmds:
       - linkerd viz tap -n podinfo deployment/podinfo
 
+  deploy-webserver:
+    desc: deploys an http server and port-forwards it.
+    cmds:
+      - defer: kubectl delete deployment caddy
+      - defer: kubectl delete service caddy
+      - kubectl create deployment caddy --image caddy --port 80
+      - kubectl expose deployment/caddy
+      - kubectl wait --for condition=available deployments/caddy
+      - kubectl port-forward service/caddy 80
