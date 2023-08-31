@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     path: argocd
-    repoURL: http://github.com/rio/enabling-experimentation-workshop.git
+    repoURL: https://github.com/rio/enabling-experimentation-workshop.git
   syncPolicy:
     automated:
       prune: true
