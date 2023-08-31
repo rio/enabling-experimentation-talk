@@ -13,18 +13,28 @@ data:
 
   template.app-deployed: |
     message: |
-      Application {{.app.metadata.name}} is now running.
+      Application is now running.
     github:
       repoURLPath: "{{.app.spec.source.repoURL}}"
       revisionPath: "{{.app.status.operationState.syncResult.revision}}"
       status:
         state: success
         label: "app/{{.app.metadata.name}}"
-        targetURL: 'http://{{index .app.metadata.labels "preview/env"}}.{{.context.previewDomain}}/?folder=/home/coder/enabling-experimentation-talk'
+        targetURL: 'http://{{index .app.metadata.labels "preview/env"}}.{{.context.previewDomain}}/'
+
+  template.code-deployed: |
+    message: |
+      Code environment is now running.
+    github:
+      repoURLPath: "{{.app.spec.source.repoURL}}"
+      revisionPath: "{{.app.status.operationState.syncResult.revision}}"
+      status:
+        state: success
+        label: "code/{{.app.metadata.name}}"
+        targetURL: 'http://code.{{index .app.metadata.labels "preview/env"}}.{{.context.previewDomain}}/?folder=/home/coder/enabling-experimentation-talk'
 
   trigger.on-deployed: |
     - description: Application is synced and healthy. Triggered once per commit.
-      when: app.status.operationState.phase in ['Succeeded'] and app.status.health.status == 'Healthy'
+      when: app.status.operationState.phase in ['Succeeded'] and app.status.health.status == 'Healthy' and app.metadata.labels.app in ["podinfo", "code-server"]
       oncePer: app.status.operationState.syncResult.revision
-      send:
-      - app-deployed
+      send: [app-deployed, code-deployed]

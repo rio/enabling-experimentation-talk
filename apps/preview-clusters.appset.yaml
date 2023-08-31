@@ -10,6 +10,7 @@ spec:
           owner: rio
           repo: enabling-experimentation-workshop
           appSecretName: github-credentials
+        requeueAfterSeconds: 5
   template:
     metadata:
       name: 'pr-{{number}}-{{branch_slug}}'
