@@ -22,6 +22,7 @@ spec:
       name: 'pr-{{number}}-{{branch_slug}}'
       labels:
         preview/env: 'pr-{{number}}-{{branch_slug}}'
+        preview/domain: 'edgecase.rio.wtf'
       annotations:
         git/sha: '{{head_sha}}'
         git/branch: '{{branch}}'
@@ -40,7 +41,6 @@ spec:
               git/sha: '{{head_sha}}'
               scm/branch-slug: '{{branch_slug}}'
               scm/pull-request: '{{number}}'
-              preview/domain: 'edgecase.rio.wtf'
             sync:
               ingresses:
                 enabled: true
