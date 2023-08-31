@@ -11,9 +11,7 @@ tasks:
   up:
     desc: "Setup the demo"
     cmds:
-      - task: tools:ensure-gitea-remote
       - task: create
-      - task: deploy-gitea
       - task: deploy-argocd
       - task: setup-github-secrets
       - task: setup-cloudflare-secrets
@@ -31,23 +29,6 @@ tasks:
       - until kubectl wait --for condition=ready pods -l k8s-app=kube-dns -n kube-system; do sleep 2; done
     status:
       - k3d cluster list --no-headers | grep k3s-default > /dev/null
-
-  deploy-gitea:
-    internal: true
-    desc: "Deploy Gitea"
-    cmds:
-      - |
-        helm upgrade gitea gitea \
-          --repo https://dl.gitea.io/charts/ \
-          --install \
-          --version 8.3.0 \
-          --namespace gitea \
-          --create-namespace \
-          -f tasks/gitea.values.yaml
-
-      # push the current repo into gitea
-      - kubectl wait --for=condition=ready pod -n gitea gitea-0 --timeout 300s
-      - until git push --tags gitea main; do sleep 5; done
 
   deploy-argocd:
     internal: true

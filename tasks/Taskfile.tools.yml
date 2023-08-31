@@ -9,15 +9,6 @@ tasks:
       - task: ensure-kubectl
       - task: ensure-vcluster
       - task: ensure-linkerd
-      # - task: symlink
-
-  symlink:
-    cmds:
-      - |
-        sudo ln -s -i -t /usr/local/bin \
-          {{.PWD}}/.bin/kubectl \
-          {{.PWD}}/.bin/vcluster \
-          {{.PWD}}/.bin/linkerd
 
   ensure-kubectl:
     status:
@@ -78,13 +69,6 @@ tasks:
       - task: ensure-slides
       - task: ensure-qrencode
       - task: ensure-figlet
-
-  ensure-gitea-remote:
-    silent: true
-    status:
-      - git remote -v | grep gitea
-    cmds:
-      - git remote add gitea http://root:demopassword@gitea.localhost/root/demo.git
 
   ensure-jq:
     silent: true

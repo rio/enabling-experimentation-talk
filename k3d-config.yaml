@@ -14,9 +14,3 @@ ports:
   - port: 443:443
     nodeFilters:
       - loadbalancer
-
-hostAliases:
-  - ip: 10.43.10.10
-    hostnames:
-      - gitea.localhost
-

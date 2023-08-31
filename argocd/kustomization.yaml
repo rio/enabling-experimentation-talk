@@ -13,7 +13,6 @@ resources:
 # https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 - install.yaml
 - ingress.yaml
-- gitea.repository.yaml
 - github.repository.yaml
 
 patches:

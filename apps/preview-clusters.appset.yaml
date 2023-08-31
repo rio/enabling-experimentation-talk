@@ -6,13 +6,6 @@ metadata:
 spec:
   generators:
     - pullRequest:
-        gitea:
-          owner: root
-          repo: demo
-          api: http://gitea.localhost/
-          insecure: true
-        requeueAfterSeconds: 5
-    - pullRequest:
         github:
           owner: rio
           repo: enabling-experimentation-workshop
