@@ -76,7 +76,9 @@ tasks:
           --from-literal=githubAppInstallationID={{.GITHUB_APP_INSTALLATION_ID}} \
           --from-file=githubAppPrivateKey={{.GITHUB_APP_PRIVATE_KEY_FILE}}
 
-      - kubectl create secret generic argocd-notifications-secret \
+      - |
+        kubectl create secret generic argocd-notifications-secret \
+          -n argocd \
           --from-file=github-private-key={{.GITHUB_APP_PRIVATE_KEY_FILE}}
 
       - kubectl -n argocd label secret github-credentials argocd.argoproj.io/secret-type=repo-creds
