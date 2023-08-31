@@ -16,6 +16,7 @@ spec:
         github:
           owner: rio
           repo: enabling-experimentation-workshop
+          appSecretName: github-credentials
   template:
     metadata:
       name: 'pr-{{number}}-{{branch_slug}}'
