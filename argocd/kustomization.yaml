@@ -18,6 +18,7 @@ resources:
 
 patches:
   - path: argocd-notifications.configmap.yaml
+  - path: remove-argocd-notifications-secret.yaml
 
 configMapGenerator:
   - name: argocd-cmd-params-cm

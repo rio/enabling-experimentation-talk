@@ -10,7 +10,7 @@ resources:
 
 images:
   - name: ghcr.io/stefanprodan/podinfo
-    newTag: 6.4.0
+    newTag: 6.3.0
 
 configMapGenerator:
   - name: podinfo-config

@@ -68,12 +68,16 @@ tasks:
         - GITHUB_REPO
     cmds:
       - |
-        kubectl -n argocd create secret generic github-credentials \
+        kubectl create secret generic github-credentials \
+          -n argocd \
           --from-literal=type=git \
           --from-literal=url={{.GITHUB_REPO}} \
           --from-literal=githubAppID={{.GITHUB_APP_ID}} \
           --from-literal=githubAppInstallationID={{.GITHUB_APP_INSTALLATION_ID}} \
           --from-file=githubAppPrivateKey={{.GITHUB_APP_PRIVATE_KEY_FILE}}
+
+      - kubectl create secret generic argocd-notifications-secret \
+          --from-file=github-private-key={{.GITHUB_APP_PRIVATE_KEY_FILE}}
 
       - kubectl -n argocd label secret github-credentials argocd.argoproj.io/secret-type=repo-creds
 
