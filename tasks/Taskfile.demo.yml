@@ -34,7 +34,15 @@ tasks:
     internal: true
     desc: "Deploy Gitea"
     cmds:
-      - skaffold deploy -m gitea
+      - |
+        helm upgrade gitea gitea \
+          --repo https://dl.gitea.io/charts/ \
+          --install \
+          --version 8.3.0 \
+          --namespace gitea \
+          --create-namespace \
+          -f tasks/gitea.values.yaml
+
       # push the current repo into gitea
       - kubectl wait --for=condition=ready pod -n gitea gitea-0 --timeout 300s
       - until git push --tags gitea main; do sleep 5; done
@@ -43,7 +51,29 @@ tasks:
     internal: true
     desc: "Deploy ArgocD and its apps"
     cmds:
-      - skaffold deploy -m argocd-apps
+      - kubectl apply -k argocd
+      - kubectl wait --for condition=established crds/applications.argoproj.io --timeout 300s
+      - kubectl apply -f argocd/app-of-apps.yaml
+
+  create-github-secrets:
+    internal: false
+    desc: Create secrets used by ArgoCD to access github.
+    requires:
+      vars:
+        - GITHUB_APP_ID
+        - GITHUB_APP_INSTALLATION_ID
+        - GITHUB_APP_PRIVATE_KEY_FILE
+        - GITHUB_REPO
+    cmds:
+      - |
+        kubectl -n argocd create secret generic github-credentials \
+          --from-literal=type=git \
+          --from-literal=url={{.GITHUB_REPO}} \
+          --from-literal=githubAppID={{.GITHUB_APP_ID}} \
+          --from-literal=githubAppInstallationID={{.GITHUB_APP_INSTALLATION_ID}} \
+          --from-file=githubAppPrivateKey={{.GITHUB_APP_PRIVATE_KEY_FILE}}
+
+      - kubectl -n argocd label secret github-credentials argocd.argoproj.io/secret-type=repo-creds
 
   slides:
     desc: "Start the slides"

@@ -9,9 +9,6 @@ set:
 
 includes:
   demo: ./tasks/Taskfile.demo.yml
-  vcluster: 
-    taskfile: ./tasks/Taskfile.vcluster.yml
-    internal: true
   tools: 
     taskfile: ./tasks/Taskfile.tools.yml
     internal: true
@@ -50,50 +47,3 @@ tasks:
     cmds:
       - linkerd viz tap -n podinfo deployment/podinfo
 
-  create-env:
-    desc: "Create the vcluster"
-    deps:
-      - task: tools:ensure-kubectl
-    cmds:
-      - task: vcluster:create
-      - task: vcluster:expose
-
-  list-env:
-    desc: "List all vclusters"
-    cmds:
-      - task: vcluster:list
-
-  delete-env:
-    desc: "Destroy the vcluster"
-    cmds:
-      - task: vcluster:delete 
-
-  deploy-app:
-    desc: "Deploy the application"
-    deps:
-      - task: tools:ensure-kubectl
-      - task: tools:ensure-helm
-      - task: tools:ensure-kustomize
-      - task: tools:ensure-skaffold
-    cmds:
-      - task: vcluster:connect
-      - defer: { task: vcluster:disconnect }
-
-      - task: set-domain
-        vars:
-          PREVIEW_DOMAIN: '{{.PREVIEW_DOMAIN | default "otel-demo.localhost"}}'
-          PREVIEW_ENVIRONMENT_PATH: opentelemetry-demo/preview
-
-      - cmd: skaffold deploy --status-check=false -m opentelemetry-demo
-
-  set-domain:
-    internal: true
-    deps:
-      - task: tools:ensure-kustomize
-    dir: "{{.PREVIEW_ENVIRONMENT_PATH}}"
-    preconditions:
-      - sh: test -n "{{.PREVIEW_DOMAIN}}"
-        msg: Please set the PREVIEW_DOMAIN variable.
-      - sh: test -n "{{.PREVIEW_ENVIRONMENT_PATH}}"
-    cmds:
-      - kustomize edit set annotation preview/domain:"{{.PREVIEW_DOMAIN}}"
