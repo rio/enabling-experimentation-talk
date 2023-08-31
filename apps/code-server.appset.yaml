@@ -37,7 +37,7 @@ spec:
           helm:
             releaseName: code-server
             values: |
-              password: '{{metadata.annotations.git/sha}}'
+              password: '{{metadata.annotations.git/branch}}'
               ingress:
                 enabled: true
                 hosts:
@@ -45,19 +45,23 @@ spec:
                     paths:
                       - /
               persistence:
-                enabled: false
+                size: 5Gi
               extraVars:
                 - name: DISABLE_TELEMETRY
                   value: 'true'
-              lifecycle:
-                enabled: true
-                postStart:
-                  exec:
-                    command:
-                      - /bin/bash
-                      - -c
-                      - |
-                        cd /home/coder
-                        git clone https://github.com/rio/enabling-experimentation-workshop.git
-                        cd enabling-experimentation-workshop
-                        ./tasks/setup-task.sh
+              extraInitContainers: |
+                - name: setup
+                  image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+                  workingDir: /home/coder
+                  command: ["bash", "-c"]
+                  args:
+                  - |
+                    if ! [[ -d enabling-experimentation-talk ]]; then
+                      git clone --branch workshop https://github.com/rio/enabling-experimentation-talk.git
+                    fi
+                    cat >> .bashrc <<<"export PATH=$HOME/enabling-experimentation-talk/.local/bin:$PATH"
+                    $HOME/enabling-experimentation-talk/tasks/setup-task.sh
+                  volumeMounts:
+                    - name: data
+                      mountPath: /home/coder
+
