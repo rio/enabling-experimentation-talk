@@ -15,9 +15,7 @@ spec:
       labels:
         preview/env: '{{metadata.labels.preview/env}}'
         preview/domain: '{{metadata.labels.preview/domain}}'
-        app: code-server
       annotations:
-        notifications.argoproj.io/subscribe.on-deployed.github: ""
         argocd.argoproj.io/sync-wave: "1"
     spec:
       project: default

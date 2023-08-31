@@ -22,19 +22,39 @@ data:
         label: "app/{{.app.metadata.name}}"
         targetURL: 'http://{{index .app.metadata.labels "preview/env"}}.{{.context.previewDomain}}/'
 
-  template.code-deployed: |
+  template.app-created: |
     message: |
-      Code environment is now running.
+      Application has been created and is pending sync.
     github:
       repoURLPath: "{{.app.spec.source.repoURL}}"
       revisionPath: "{{.app.status.operationState.syncResult.revision}}"
       status:
-        state: success
-        label: "code/{{.app.metadata.name}}"
-        targetURL: 'http://code.{{index .app.metadata.labels "preview/env"}}.{{.context.previewDomain}}/?folder=/home/coder/enabling-experimentation-talk'
+        state: pending
+        label: "app/{{.app.metadata.name}}"
+
+  template.app-created: |
+    message: |
+      Application is syncing.
+    github:
+      repoURLPath: "{{.app.spec.source.repoURL}}"
+      revisionPath: "{{.app.status.operationState.syncResult.revision}}"
+      status:
+        state: pending
+        label: "app/{{.app.metadata.name}}"
 
   trigger.on-deployed: |
     - description: Application is synced and healthy. Triggered once per commit.
-      when: app.status.operationState.phase in ['Succeeded'] and app.status.health.status == 'Healthy' and app.metadata.labels.app in ["podinfo", "code-server"]
+      when: app.status.operationState.phase in ['Succeeded'] and app.status.health.status == 'Healthy'
       oncePer: app.status.operationState.syncResult.revision
-      send: [app-deployed, code-deployed]
+      send: [app-deployed]
+
+  trigger.on-created: |
+    - description: Application is created. Triggered once per app.
+      when: true
+      oncePer: app.metadata.name
+      send: [app-created]
+
+  trigger.on-syncing: |
+    - description: Application is syncing. Triggered once per commit.
+      when: app.status.operationState != nil and app.status.operationState.phase in ['Running']
+      send: [app-syncing]

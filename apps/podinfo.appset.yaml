@@ -15,9 +15,10 @@ spec:
       labels:
         preview/env: '{{metadata.labels.preview/env}}'
         preview/domain: '{{metadata.labels.preview/domain}}'
-        app: podinfo
       annotations:
         notifications.argoproj.io/subscribe.on-deployed.github: ""
+        notifications.argoproj.io/subscribe.on-created.github: ""
+        notifications.argoproj.io/subscribe.on-syncing.github: ""
     spec:
       source:
         repoURL: https://github.com/rio/enabling-experimentation-workshop.git
