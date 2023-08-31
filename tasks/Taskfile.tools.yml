@@ -3,47 +3,47 @@
 version: '3'
 
 tasks:
-  ensure-kustomize:
+  install:
     silent: true
-    status:
-      - command -v kustomize
     cmds:
-      - curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
-      - mv kustomize /usr/local/bin/
+      - mkdir -p .bin
+      - task: ensure-kubectl
+      - task: ensure-vcluster
+      - task: ensure-linkerd
+
+  symlink:
+    dir: .bin
+    cmds:
+      - sudo ln -s kubectl /usr/local/bin/kubectl
+      - sudo ln -s vcluster /usr/local/bin/vcluster
+      - sudo ln -s linkerd /usr/local/bin/linkerd
 
   ensure-kubectl:
     silent: true
     status:
       - command -v kubectl
+    dir: .bin
     cmds:
       - curl -sSfLO "https://dl.k8s.io/release/$(curl -sSfL https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
       - chmod +x kubectl
-      - mv kubectl /usr/local/bin/
-
-  ensure-skaffold:
-    silent: true
-    status:
-      - command -v skaffold
-    cmds:
-      - curl -sSfLo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
-      - chmod +x skaffold
-      - mv skaffold /usr/local/bin/
-
-  ensure-helm:
-    silent: true
-    status:
-      - command -v helm
-    cmds:
-      - curl -sSfL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
   ensure-vcluster:
     silent: true
     status:
       - command -v vcluster
+    dir: .bin
     cmds:
-      - curl -sSfLo vcluster "https://github.com/loft-sh/vcluster/releases/download/v0.14.2/vcluster-linux-amd64"
+      - curl -sSfLo vcluster "https://github.com/loft-sh/vcluster/releases/download/v0.15.7/vcluster-linux-amd64"
       - chmod +x vcluster
-      - mv vcluster /usr/local/bin/
+
+  ensure-linkerd:
+    silent: true
+    status:
+      - command -v linkerd
+    dir: .bin
+    cmds:
+      - curl -sSfLo linkerd https://github.com/linkerd/linkerd2/releases/download/stable-2.14.0/linkerd2-cli-stable-2.14.0-linux-amd64
+      - chmod +x linkerd
 
   ensure-figlet:
     silent: true
@@ -95,17 +95,3 @@ tasks:
     cmds:
       - apt-get -qq update > /dev/null
       - apt-get -qqy install jq > /dev/null
-
-  ensure-kfp2:
-    silent: true
-    status:
-      - command -v kfp
-    cmds:
-      - pip3 install --pre kfp > /dev/null
-
-  ensure-kfp1:
-    silent: true
-    status:
-      - command -v kfp
-    cmds:
-      - pip3 install kfp==1.8.20 > /dev/null

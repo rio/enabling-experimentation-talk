@@ -17,6 +17,10 @@ includes:
     internal: true
 
 tasks:
+  install-tools:
+    cmds:
+      - task: tools:install
+
   create-env:
     desc: "Create the vcluster"
     deps:
