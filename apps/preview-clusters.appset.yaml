@@ -16,9 +16,6 @@ spec:
         github:
           owner: rio
           repo: enabling-experimentation-workshop
-          tokenRef:
-            key: password
-            secretName: github-app-credentials
   template:
     metadata:
       name: 'pr-{{number}}-{{branch_slug}}'
@@ -42,6 +39,7 @@ spec:
               git/sha: '{{head_sha}}'
               scm/branch-slug: '{{branch_slug}}'
               scm/pull-request: '{{number}}'
+              preview/domain: 'edgecase.rio.wtf'
             sync:
               ingresses:
                 enabled: true

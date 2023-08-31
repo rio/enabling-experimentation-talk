@@ -8,5 +8,3 @@ type: Opaque
 stringData:
   type: git
   url: https://github.com/rio/enabling-experimentation-workshop.git
-  username: github-token
-  password: ""

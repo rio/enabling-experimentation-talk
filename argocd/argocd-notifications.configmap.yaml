@@ -4,7 +4,7 @@ metadata:
   name: argocd-notifications-cm
 data:
   context: |
-    previewDomain: localhost
+    previewDomain: edgecase.rio.wtf
 
   service.github: |
     appID: 383353
