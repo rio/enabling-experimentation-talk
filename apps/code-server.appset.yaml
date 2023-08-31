@@ -49,3 +49,15 @@ spec:
               extraVars:
                 - name: DISABLE_TELEMETRY
                   value: 'true'
+              lifecycle:
+                enabled: true
+                postStart:
+                  exec:
+                    command:
+                      - /bin/bash
+                      - -c
+                      - |
+                        cd /home/coder
+                        git clone https://github.com/rio/enabling-experimentation-workshop.git
+                        cd enabling-experimentation-workshop
+                        ./tasks/setup-task.sh
