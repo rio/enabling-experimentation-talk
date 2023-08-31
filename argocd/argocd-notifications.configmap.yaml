@@ -20,7 +20,7 @@ data:
       status:
         state: success
         label: "app/{{.app.metadata.name}}"
-        targetURL: 'http://{{index .app.metadata.labels "preview/env"}}.{{.context.previewDomain}}/'
+        targetURL: 'http://{{index .app.metadata.labels "preview/env"}}.{{.context.previewDomain}}/?folder=/home/coder/enabling-experimentation-talk'
 
   trigger.on-deployed: |
     - description: Application is synced and healthy. Triggered once per commit.
