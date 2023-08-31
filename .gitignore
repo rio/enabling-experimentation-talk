@@ -1,3 +1,7 @@
 bin
+.bin
 __pycache__
 kubeconfig.yaml
+.envrc
+cloudflared-credentials.json
+privatekey.pem

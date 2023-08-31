@@ -55,15 +55,16 @@ tasks:
       - kubectl wait --for condition=established crds/applications.argoproj.io --timeout 300s
       - kubectl apply -f argocd/app-of-apps.yaml
 
-  create-github-secrets:
+  setup-secrets:
     internal: false
-    desc: Create secrets used by ArgoCD to access github.
+    desc: Setup secrets used by ArgoCD to access github and cloudflare's secrets.
     requires:
       vars:
         - GITHUB_APP_ID
         - GITHUB_APP_INSTALLATION_ID
         - GITHUB_APP_PRIVATE_KEY_FILE
         - GITHUB_REPO
+        - CLOUDFLARE_CREDENTIALS_FILE
     cmds:
       - |
         kubectl -n argocd create secret generic github-credentials \
@@ -74,6 +75,8 @@ tasks:
           --from-file=githubAppPrivateKey={{.GITHUB_APP_PRIVATE_KEY_FILE}}
 
       - kubectl -n argocd label secret github-credentials argocd.argoproj.io/secret-type=repo-creds
+
+      - kubectl create secret generic tunnel-credentials -n cloudflared --from-file=credentials.json={{.CLOUDFLARE_CREDENTIALS_FILE}}
 
   slides:
     desc: "Start the slides"
