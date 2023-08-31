@@ -40,5 +40,5 @@ data:
 
   trigger.on-syncing: |
     - description: Application is syncing. Triggered once per commit.
-      when: app.status.operationState != nil and app.status.operationState.phase in ['Running']
+      when: app.status.operationState != nil and app.status.health.status == 'Progressing'
       send: [app-syncing]
