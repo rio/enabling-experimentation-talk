@@ -3,7 +3,22 @@ author: "Rio Kierkels"
 paging: "%d/%d"
 theme: "theme.json"
 ---
-# [00:00] Cloud Native & Kubernetes
+# [00:00] EdgeCase 2023: Enabling Experimentation Workshop
+----
+
+```
+~~~figlet -t -f slant
+Welcome !
+~~~
+```
+
+Please go to https://github.com/rio/enabling-experimentation-workshop
+
+and press the ⭐ button to join!
+
+---
+
+# [00:00] EdgeCase 2023
 ----
 
 ```
