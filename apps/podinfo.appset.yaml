@@ -17,7 +17,6 @@ spec:
         preview/domain: '{{metadata.labels.preview/domain}}'
       annotations:
         notifications.argoproj.io/subscribe.on-deployed.github: ""
-        notifications.argoproj.io/subscribe.on-created.github: ""
         notifications.argoproj.io/subscribe.on-syncing.github: ""
     spec:
       source:

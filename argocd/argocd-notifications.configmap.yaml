@@ -22,22 +22,12 @@ data:
         label: "app/{{.app.metadata.name}}"
         targetURL: 'http://{{index .app.metadata.labels "preview/env"}}.{{.context.previewDomain}}/'
 
-  template.app-created: |
-    message: |
-      Application has been created and is pending sync.
-    github:
-      repoURLPath: "{{.app.spec.source.repoURL}}"
-      revisionPath: "{{.app.status.operationState.syncResult.revision}}"
-      status:
-        state: pending
-        label: "app/{{.app.metadata.name}}"
-
   template.app-syncing: |
     message: |
       Application is syncing.
     github:
       repoURLPath: "{{.app.spec.source.repoURL}}"
-      revisionPath: "{{.app.status.operationState.syncResult.revision}}"
+      revisionPath: "{{.app.status.operationState.operation.sync.revision}}"
       status:
         state: pending
         label: "app/{{.app.metadata.name}}"
@@ -47,12 +37,6 @@ data:
       when: app.status.operationState.phase in ['Succeeded'] and app.status.health.status == 'Healthy'
       oncePer: app.status.operationState.syncResult.revision
       send: [app-deployed]
-
-  trigger.on-created: |
-    - description: Application is created. Triggered once per app.
-      when: true
-      oncePer: app.metadata.name
-      send: [app-created]
 
   trigger.on-syncing: |
     - description: Application is syncing. Triggered once per commit.
