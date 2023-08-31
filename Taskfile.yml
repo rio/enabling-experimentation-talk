@@ -21,6 +21,35 @@ tasks:
     cmds:
       - task: tools:install
 
+  linkerd-install:
+    desc: uses the linkerd cli to deploy linkerd and its viz component and injects the proxy into podinfo
+    cmds:
+      - linkerd install --crds | kubectl apply -f -
+      - linkerd install --set proxyInit.runAsRoot=true | kubectl apply -f -
+      - linkerd viz install | kubectl apply -f -
+      - linkerd check
+
+  linkerd-inject:
+    desc: injects the linkerd proxy in podinfo
+    cmds:
+      - kubectl get deployment podinfo -n podinfo -o yaml | linkerd inject - | kubectl apply -f -
+      - kubectl rollout status deployment/podinfo -n podinfo
+
+  linkerd-edges:
+    desc: lists edges known by linkerd
+    cmds:
+      - linkerd viz edges deployments --all-namespaces
+
+  linkerd-top:
+    desc: runs linkerd top to watch for route stats
+    cmds:
+      - linkerd viz top -n podinfo deployment/podinfo
+
+  linkerd-tap:
+    desc: runs linkerd top to log requests
+    cmds:
+      - linkerd viz tap -n podinfo deployment/podinfo
+
   create-env:
     desc: "Create the vcluster"
     deps:
