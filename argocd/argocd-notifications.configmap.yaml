@@ -20,7 +20,7 @@ data:
       status:
         state: success
         label: "app/{{.app.metadata.name}}"
-        targetURL: 'http://{{index .app.metadata.labels "preview/env"}}.{{.context.previewDomain}}/'
+        targetURL: 'https://{{index .app.metadata.labels "preview/env"}}.{{.context.previewDomain}}/'
 
   template.app-syncing: |
     message: |
