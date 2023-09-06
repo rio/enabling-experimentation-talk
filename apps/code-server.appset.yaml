@@ -43,7 +43,7 @@ spec:
               ingress:
                 enabled: true
                 hosts:
-                  - host: 'code.{{nameNormalized}}.{{metadata.labels.preview/domain}}'
+                  - host: 'code-{{nameNormalized}}.{{metadata.labels.preview/domain}}'
                     paths:
                       - /
               persistence:
