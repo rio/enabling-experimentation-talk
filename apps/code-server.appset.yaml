@@ -50,8 +50,8 @@ spec:
                 size: 5Gi
               resources:
                 requests:
-                  cpu: 1
-                  memory: 1Gi
+                  cpu: 500m
+                  memory: 512Mi
               extraVars:
                 - name: DISABLE_TELEMETRY
                   value: 'true'
