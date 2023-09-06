@@ -50,6 +50,14 @@ tasks:
       - sudo apt-get -qq update > /dev/null
       - sudo apt-get -qqy install qrencode > /dev/null
 
+  ensure-graph-easy:
+    silent: true
+    status:
+      - command -v graph-easy
+    cmds:
+      - sudo apt-get -qq update > /dev/null
+      - sudo apt-get -qqy install libgraph-easy-pearl > /dev/null
+
   ensure-slides:
     silent: true
     dir: ../slides
@@ -69,6 +77,7 @@ tasks:
       - task: ensure-slides
       - task: ensure-qrencode
       - task: ensure-figlet
+      - task: ensure-graph-easy
 
   ensure-jq:
     silent: true

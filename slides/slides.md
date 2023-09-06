@@ -45,7 +45,7 @@ Rio Kierkels
 
 ---
 
-# [02:00] The Requirements
+# [02:00] The Goal
 
 ----
 > I want to test out this `bug` / `feature` / `new thing`
@@ -62,34 +62,22 @@ Rio Kierkels
 
 ---
 
-# [04:00] The Local Problems
+# [04:00] The Problems
 
 ----
 > My computer is a `potato`.
 ----
 
+## Local
+
 - Wrong `operating system`
 - Systems might have different `CPU architecture` (ARM Macs)
-- Restricted local `system access`
-- Setup exceeds local `system resources`
+- Restricted local `system access` and `system resources`
 
----
-
-# [05:00] The Remote Problems
-
-----
-> What do you mean you `"didn't think anyone was using it"`?!
-----
-
-- Environment setup can be `slow`
-  - credentials need to be obtained
-  - teams need to be involved
-  - actual provisioning might be slow
-- Available environments are `shared`
-  - service disruptions
-  - data leaks
-  - security incidents
+## Remote
+- Shared environments can be `fragile` and `expensive`
 - Experiment `reproducability` becomes problematic
+- Unintentional `data leaks` and `security incidents` can happen
 - Temporary environments are `idle` or `forgotten`
 
 ---
@@ -115,7 +103,7 @@ Rio Kierkels
 ----
 ## Imperative: Continuous Integration (CI)
 
-Utilize GitLab's CI system to provide on demand environments based on Merge Requests.
+Utilize a CI system to provide on demand environments based on Pull Requests.
 
 ### Advantages
 
@@ -131,37 +119,13 @@ Utilize GitLab's CI system to provide on demand environments based on Merge Requ
 
 ---
 
-```
-~~~graph-easy --as=boxart
-[ PR ] -> [ Environment ]
-~~~
-```
----
-
-# [15:00] Imperative Demo
-
-----
-
-## The Tools
-
-- **GitLab**:         Source code management
-- **GitLab CI**:      GitLab's built in pipeline runner
-- **Task**:           A task runner with some nice features
-
-### Orchestration
-
-- **Kubernetes**:     The container workload orchestrator
-- **vcluster**:       I heard you like clusters, so I put some clusters in your clusters
-
----
-
 # [30:00] The Approaches (2/2)
 
 ----
 
 ## Declarative: GitOps
 
-Utilize ArgoCD to provision new environments based on Pull Requests in Gitea.
+Utilize GitOps based flows to provision new environments based on Pull Requests.
 
 ### Advantages
 
@@ -177,13 +141,119 @@ Utilize ArgoCD to provision new environments based on Pull Requests in Gitea.
 
 ---
 
-# [33:00] Declarative Demo
+# 33:00 Workshop Goal
+
+----
+
+```
+~~~graph-easy --as=boxart
+[ Open Pull Request ]
+~~~
+```
+
+---
+
+# 33:00 Workshop Goal
+
+----
+
+```
+~~~graph-easy --as=boxart
+[ Open Pull Request ] -> [ Environment ]
+~~~
+```
+
+---
+
+# 33:00 Workshop Goal
+
+----
+
+```
+~~~graph-easy --as=boxart
+[ Open Pull Request ] -> [ Environment ]
+~~~
+```
+
+```
+~~~graph-easy --as=boxart
+[ Updated Pull Request ]
+~~~
+```
+
+---
+
+# 33:00 Workshop Goal
+
+----
+
+```
+~~~graph-easy --as=boxart
+[ Open Pull Request ] -> [ Environment ]
+~~~
+```
+
+```
+~~~graph-easy --as=boxart
+[ Updated Pull Request ] -> [ Updated Environment ]
+~~~
+```
+
+---
+
+# 33:00 Workshop Goal
+
+----
+
+```
+~~~graph-easy --as=boxart
+[ Open Pull Request ] -> [ Environment ]
+~~~
+```
+
+```
+~~~graph-easy --as=boxart
+[ Updated Pull Request ] -> [ Updated Environment ]
+~~~
+```
+```
+~~~graph-easy --as=boxart
+[ Closed Pull Request ]
+~~~
+```
+
+---
+
+# 33:00 Workshop Goal
+
+----
+
+```
+~~~graph-easy --as=boxart
+[ Open Pull Request ] -> [ Environment ]
+~~~
+```
+
+```
+~~~graph-easy --as=boxart
+[ Updated Pull Request ] -> [ Updated Environment ]
+~~~
+```
+
+```
+~~~graph-easy --as=boxart
+[ Closed Pull Request ] -> [ No Environment ]
+~~~
+```
+---
+
+# [33:00] Workshop Tools
 
 ----
 
 ## The Tools
 
-- **Gitea**:          Light weight source code management
+- **GitHub**:         Source code management
 - **ArgoCD**:         GitOps: Declarative, versioned and continuously reconciled system state
 - **Kyverno**:        A rules engine and enforcer that integrates nicely with Kubernetes
 
@@ -194,11 +264,24 @@ Utilize ArgoCD to provision new environments based on Pull Requests in Gitea.
 
 ---
 
-# [40:00] Thank You
+# 33:00 Basic Architecture
+
+----
+
+```
+~~~graph-easy --as=boxart
+[ ArgoCD ] - watches -> [ GitHub ]
+[ ArgoCD ] - watches -> [ cluster secrets ]
+[ ArgoCD ] - creates -> [ vcluster ]
+[ ArgoCD ] - deploys -> [ app ]
+[ vcluster ] - creates -> [ cluster secrets ]
+~~~
+```
+
+---
 
 ----
 > [Repository      ](https://github.com/rio/enabling-experimentation-talk)
-> [Rio Kierkels    ](r.kierkels@fullstaq.com)
 ----
 
 ```
@@ -207,12 +290,3 @@ Questions?
 ~~~
 ```
 
----
-
-# GitHub Code Repo QR Code
-
-```
-~~~qrencode -m 2 -t UTF8
-https://github.com/rio/enabling-experimentation-talk
-~~~
-```
