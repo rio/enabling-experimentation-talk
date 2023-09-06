@@ -48,6 +48,10 @@ spec:
                       - /
               persistence:
                 size: 5Gi
+              resources:
+                requests:
+                  cpu: 1
+                  memory: 1Gi
               extraVars:
                 - name: DISABLE_TELEMETRY
                   value: 'true'
