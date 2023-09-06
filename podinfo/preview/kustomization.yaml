@@ -14,8 +14,8 @@ images:
 
 configMapGenerator:
   - name: podinfo-config
-    # literals:
-    #   - PODINFO_UI_COLOR=#8c1bb5
+    literals:
+    - PODINFO_UI_COLOR=#34577c #8c1bb5
 
 replacements:
 - source:
