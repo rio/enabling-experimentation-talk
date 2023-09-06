@@ -3,9 +3,6 @@ kind: ConfigMap
 metadata:
   name: argocd-notifications-cm
 data:
-  context: |
-    previewDomain: edgecase.rio.wtf
-
   service.github: |
     appID: 383353
     installationID: 41276697
@@ -20,7 +17,7 @@ data:
       status:
         state: success
         label: "app/{{.app.metadata.name}}"
-        targetURL: 'https://{{index .app.metadata.labels "preview/env"}}.{{.context.previewDomain}}/'
+        targetURL: 'https://{{index .app.metadata.labels "preview/env"}}.{{index .app.metadata.labels "preview/domain"}}/'
 
   template.app-syncing: |
     message: |
