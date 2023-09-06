@@ -14,6 +14,7 @@ resources:
 - install.yaml
 - ingress.yaml
 - github.repository.yaml
+- wildcard.tlsstore.yaml
 
 patches:
   - path: argocd-notifications.configmap.yaml

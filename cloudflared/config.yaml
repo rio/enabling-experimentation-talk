@@ -1,8 +1,0 @@
-tunnel: edgecase-workshop
-credentials-file: /etc/cloudflared/creds/credentials.json
-metrics: 0.0.0.0:2000
-no-autoupdate: true
-ingress:
-- hostname: '*.edgecase.rio.wtf'
-  service: https://traefik.kube-system.svc.cluster.local:443
-- service: http_status:404

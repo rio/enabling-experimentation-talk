@@ -11,19 +11,17 @@ tasks:
   up:
     desc: "Setup the demo"
     cmds:
-      - task: create
       - task: deploy-argocd
       - task: setup-github-secrets
-      - task: setup-cloudflare-secrets
+      - task: setup-github-notification-secrets
       - task: setup-wildcard-certificate
 
-  down:
+  delete-cluster:
     desc: "Take down the cluster and everything in it"
     cmds:
       - k3d cluster delete
 
-  create:
-    internal: true
+  create-cluster:
     desc: "Start the cluster"
     cmds:
       - k3d cluster create --config k3d-config.yaml
@@ -40,7 +38,7 @@ tasks:
       - kubectl apply -f argocd/app-of-apps.yaml
 
   setup-github-secrets:
-    internal: false
+    internal: true
     desc: Setup secrets used by ArgoCD to access github.
     requires:
       vars:
@@ -48,58 +46,49 @@ tasks:
         - GITHUB_APP_INSTALLATION_ID
         - GITHUB_APP_PRIVATE_KEY_FILE
         - GITHUB_REPO
+    status:
+      - kubectl get secret github-credentials -n argocd > /dev/null
     cmds:
       - |
-        if ! kubectl get secret github-credentials -n argocd ; then
-          kubectl create secret generic github-credentials \
-            -n argocd \
-            --from-literal=type=git \
-            --from-literal=url={{.GITHUB_REPO}} \
-            --from-literal=githubAppID={{.GITHUB_APP_ID}} \
-            --from-literal=githubAppInstallationID={{.GITHUB_APP_INSTALLATION_ID}} \
-            --from-file=githubAppPrivateKey={{.GITHUB_APP_PRIVATE_KEY_FILE}}
-        fi
-
-      - |
-        if ! kubectl get secret argocd-notifications-secret -n argocd ; then
-          kubectl create secret generic argocd-notifications-secret \
-            -n argocd \
-            --from-file=github-private-key={{.GITHUB_APP_PRIVATE_KEY_FILE}}
-        fi
+        kubectl create secret generic github-credentials \
+          -n argocd \
+          --from-literal=type=git \
+          --from-literal=url={{.GITHUB_REPO}} \
+          --from-literal=githubAppID={{.GITHUB_APP_ID}} \
+          --from-literal=githubAppInstallationID={{.GITHUB_APP_INSTALLATION_ID}} \
+          --from-file=githubAppPrivateKey={{.GITHUB_APP_PRIVATE_KEY_FILE}}
 
       - kubectl -n argocd label secret github-credentials argocd.argoproj.io/secret-type=repo-creds
 
-  setup-cloudflare-secrets:
-    internal: false
-    desc: Setup secrets used by cloudflare to provide a tunnel.
+  setup-github-notification-secrets:
+    internal: true
+    desc: Setup secrets used by ArgoCD to access github status checks.
     requires:
       vars:
-        - CLOUDFLARE_CREDENTIALS_FILE
+        - GITHUB_APP_PRIVATE_KEY_FILE
+    status:
+      - kubectl get secret argocd-notifications-secret -n argocd > /dev/null
     cmds:
-      - until kubectl get ns cloudflare; do sleep 2; done
       - |
-        if ! kubectl get secret tunnel-credentials -n cloudflare ; then
-          kubectl create secret generic tunnel-credentials \
-            -n cloudflare \
-            --from-file=credentials.json={{.CLOUDFLARE_CREDENTIALS_FILE}}
-        fi
+        kubectl create secret generic argocd-notifications-secret \
+          -n argocd \
+          --from-file=github-private-key={{.GITHUB_APP_PRIVATE_KEY_FILE}}
 
   setup-wildcard-certificate:
-    internal: false
-    desc: Setup secrets containing the wildcard certificate used by traefik.
+    internal: true
+    desc: Setup the secret containing the wildcard certificate used by traefik.
     requires:
       vars:
         - CERTIFICATE_KEY_FILE
         - CERTIFICATE_CERT_FILE
+    status:
+      - kubectl get secret default-certificate -n argocd > /dev/null
     cmds:
-      - until kubectl get ns cloudflare; do sleep 2; done
       - |
-        if ! kubectl get secret default-certificate -n cloudflare ; then
-          kubectl create secret generic default-certificate \
-            -n cloudflare \
-            --from-file=tls.crt={{.CERTIFICATE_CERT_FILE}} \
-            --from-file=tls.key={{.CERTIFICATE_KEY_FILE}}
-        fi
+        kubectl create secret generic default-certificate \
+          -n argocd \
+          --from-file=tls.crt={{.CERTIFICATE_CERT_FILE}} \
+          --from-file=tls.key={{.CERTIFICATE_KEY_FILE}}
 
   slides:
     desc: "Start the slides"
