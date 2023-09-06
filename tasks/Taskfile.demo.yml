@@ -15,6 +15,7 @@ tasks:
       - task: deploy-argocd
       - task: setup-github-secrets
       - task: setup-cloudflare-secrets
+      - task: setup-wildcard-certificate
 
   down:
     desc: "Take down the cluster and everything in it"
@@ -49,18 +50,22 @@ tasks:
         - GITHUB_REPO
     cmds:
       - |
-        kubectl create secret generic github-credentials \
-          -n argocd \
-          --from-literal=type=git \
-          --from-literal=url={{.GITHUB_REPO}} \
-          --from-literal=githubAppID={{.GITHUB_APP_ID}} \
-          --from-literal=githubAppInstallationID={{.GITHUB_APP_INSTALLATION_ID}} \
-          --from-file=githubAppPrivateKey={{.GITHUB_APP_PRIVATE_KEY_FILE}}
+        if ! kubectl get secret github-credentials -n argocd ; then
+          kubectl create secret generic github-credentials \
+            -n argocd \
+            --from-literal=type=git \
+            --from-literal=url={{.GITHUB_REPO}} \
+            --from-literal=githubAppID={{.GITHUB_APP_ID}} \
+            --from-literal=githubAppInstallationID={{.GITHUB_APP_INSTALLATION_ID}} \
+            --from-file=githubAppPrivateKey={{.GITHUB_APP_PRIVATE_KEY_FILE}}
+        fi
 
       - |
-        kubectl create secret generic argocd-notifications-secret \
-          -n argocd \
-          --from-file=github-private-key={{.GITHUB_APP_PRIVATE_KEY_FILE}}
+        if ! kubectl get secret argocd-notifications-secret -n argocd ; then
+          kubectl create secret generic argocd-notifications-secret \
+            -n argocd \
+            --from-file=github-private-key={{.GITHUB_APP_PRIVATE_KEY_FILE}}
+        fi
 
       - kubectl -n argocd label secret github-credentials argocd.argoproj.io/secret-type=repo-creds
 
@@ -72,7 +77,29 @@ tasks:
         - CLOUDFLARE_CREDENTIALS_FILE
     cmds:
       - until kubectl get ns cloudflare; do sleep 2; done
-      - kubectl create secret generic tunnel-credentials -n cloudflare --from-file=credentials.json={{.CLOUDFLARE_CREDENTIALS_FILE}}
+      - |
+        if ! kubectl get secret tunnel-credentials -n cloudflare ; then
+          kubectl create secret generic tunnel-credentials \
+            -n cloudflare \
+            --from-file=credentials.json={{.CLOUDFLARE_CREDENTIALS_FILE}}
+        fi
+
+  setup-wildcard-certificate:
+    internal: false
+    desc: Setup secrets containing the wildcard certificate used by traefik.
+    requires:
+      vars:
+        - CERTIFICATE_KEY_FILE
+        - CERTIFICATE_CERT_FILE
+    cmds:
+      - until kubectl get ns cloudflare; do sleep 2; done
+      - |
+        if ! kubectl get secret default-certificate -n cloudflare ; then
+          kubectl create secret generic default-certificate \
+            -n cloudflare \
+            --from-file=tls.crt={{.CERTIFICATE_CERT_FILE}} \
+            --from-file=tls.key={{.CERTIFICATE_KEY_FILE}}
+        fi
 
   slides:
     desc: "Start the slides"
