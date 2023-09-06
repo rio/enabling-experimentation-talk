@@ -6,6 +6,7 @@ namespace: cloudflare
 resources:
 - cloudflared.yaml
 - namespace.yaml
+- wildcard.tlsstore.yaml
 
 configMapGenerator:
 - name: cloudflared

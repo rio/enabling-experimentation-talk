@@ -5,3 +5,4 @@ kubeconfig.yaml
 .envrc
 cloudflared-credentials.json
 privatekey.pem
+certs/
