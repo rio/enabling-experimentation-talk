@@ -132,8 +132,8 @@ Utilize GitLab's CI system to provide on demand environments based on Merge Requ
 ---
 
 ```
-~~~figlet -c -f slant
-Your Implementation May Vary
+~~~graph-easy --as=boxart
+[ PR ] -> [ Environment ]
 ~~~
 ```
 ---
