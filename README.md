@@ -92,17 +92,103 @@ You will only require a working GitHub account and a browser and internet access
 
 # Workshop Part 2 Work Environment
 
-1. Click the `Details` link next to the `app/...` check again. Add `code-` in front of the URL.
-1. You will be prompted for a password. For your convenience it is set to be the same as your branch name. Simply click the copy button next to your branch name on the pull request page.
-1. Click the `Yes I trust the authors button.`
-1. Optionally change the color theme to something you like in the bottom left corner by clicking on the cog wheel then navigate to `Themes -> Color Theme`.
-1. Open a new terminal into the enabling experimentation repo by right clicking the folder on the left and selecting `Open in Integrated Terminal`.
-1. Checkout your new environment by running kubectl.
-    ```
-    kubectl get pods,svc,ingress -A
-    ```
-1. Poke your cuttlefish by running `curl podinfo.podinfo:9898`. Keep hitting it a couple of times and see it load balance between the two pods.
-1. Deploy a new webserver and port-forward it using `task deploy-webserver`. Wait until there's a popup notifying your that a new port is forwarded and click open.
+## 1. Accessing VSCode
+
+1.1 Edit the URL of your cuttlefish page and add `code-` in front of the URL.
+
+![Code URL](./assets/code-url.png)
+
+1.2 You will be prompted for a password. For your convenience it is set to be the same as your branch name. Simply click the copy button next to your branch name on the pull request page.
+
+![Copy branch name](./assets/copy-branch-name.png)
+![Password prompt](./assets/password-prompt.png)
+
+1.3 Click the `Yes I trust the authors button.`
+
+![Trust authors](./assets/trust-authors.png)
+
+1.4 Optionally change the color theme to something you like by clicking on the `Browse Color Themes` button. Or by clicking on the cog wheel in the bottom left corner then navigate to `Themes -> Color Theme`
+
+![Color theme button](./assets/color-theme-button.png)
+![Color theme menu](./assets/color-theme-menu.png)
+
+## 2. Taking a look around
+
+2.1 Open a new terminal into the enabling experimentation repo by right clicking the folder on the left and selecting `Open in Integrated Terminal`.
+
+![Open terminal](./assets/open-terminal.png)
+
+2.2 Checkout your new environment by running kubectl.
+
+```bash
+kubectl get pods,svc,ingress -A
+```
+
+It should show you something similar to this.
+
+```bash
+NAMESPACE     NAME                               READY   STATUS    RESTARTS   AGE
+kube-system   pod/coredns-864d4658cb-nq9nb       1/1     Running   0          40m
+code-server   pod/code-server-68b7db57fc-jkrpf   1/1     Running   0          39m
+podinfo       pod/podinfo-64f86dc5f5-p6vf2       1/1     Running   0          18m
+podinfo       pod/podinfo-64f86dc5f5-zwtcn       1/1     Running   0          18m
+
+NAMESPACE     NAME                  TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)                  AGE
+default       service/kubernetes    ClusterIP   10.43.248.2    <none>        443/TCP                  40m
+kube-system   service/kube-dns      ClusterIP   10.43.194.45   <none>        53/UDP,53/TCP,9153/TCP   40m
+podinfo       service/podinfo       ClusterIP   10.43.165.98   <none>        9898/TCP,9999/TCP        40m
+code-server   service/code-server   ClusterIP   10.43.185.38   <none>        8080/TCP                 39m
+
+NAMESPACE     NAME                                    CLASS     HOSTS                             ADDRESS                                             PORTS   AGE
+podinfo       ingress.networking.k8s.io/podinfo       traefik   pr-60-rio.edgecase.rio.wtf        d0f9c870-e66b-45ee-8c7c-6b443de00a93.k8s.civo.com   80      40m
+code-server   ingress.networking.k8s.io/code-server   traefik   code-pr-60-rio.edgecase.rio.wtf   d0f9c870-e66b-45ee-8c7c-6b443de00a93.k8s.civo.com   80      39m
+```
+
+2.3 Poke your cuttlefish by using curl. Keep hitting it a couple of times and see it load balance between the two pods.
+
+```bash
+curl podinfo.podinfo:9898
+```
+
+You'll see it respond with a JSON blob containing both the image tag and the background color we set earlier.
+
+```json
+{
+  "hostname": "podinfo-64f86dc5f5-zwtcn",
+  "version": "6.4.1",
+  "revision": "4892983fd12e3ffffcd5a189b1549f2ef26b81c2",
+  "color": "#8c1bb5",
+  "logo": "https://raw.githubusercontent.com/stefanprodan/podinfo/gh-pages/cuddle_clap.gif",
+  "message": "greetings from podinfo v6.4.1",
+  "goos": "linux",
+  "goarch": "amd64",
+  "runtime": "go1.21.0",
+  "num_goroutine": "8",
+  "num_cpu": "4"
+}
+```
+
+## 3. Deploying a new webserver
+
+3.1 Deploy a new webserver and port-forward it using a task command. 
+
+```bash
+task deploy-webserver
+```
+
+3.2 Wait until there's a popup notifying your that a new port is forwarded and click open.
+
+![Port forward popup](./assets/port-forward-popup.png)
+
+Don't worry if you've missed it. You can find all your forwarded ports under the `ports` tab.
+
+![Port forward tab](./assets/port-forward-tab.png)
+
+3.3 You should see Caddy's default page.
+
+![Caddy default page](./assets/caddy-default.png)
+
+3.4 Kill the port-forward and automatically cleanup the caddy deployment by running `Ctrl + c` in the terminal.
 
 # Workshop Part 3 Infrastucture
 
