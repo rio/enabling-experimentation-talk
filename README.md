@@ -192,19 +192,378 @@ Don't worry if you've missed it. You can find all your forwarded ports under the
 
 # Workshop Part 3 Infrastucture
 
-1. Lets see how our cuttlefish deals with a service mesh. Install linkerd by running `task linkerd-install`.
-1. Inject the linkerd proxy into the cuttlefish by running `task linkerd-inject`.
-1. Lets checkout all of the edges between systems that linkerd knows about by running `task linkerd-edges`.
-1. Lets see the http paths that are being called by running `task linkerd-top`.
-1. Add `/status/500` to the url of the cuttlefish to let it fail and see that path show up in the linkerd output.
+## 1. Deploying linkerd
+
+1.1 Lets see how our cuttlefish deals with a service mesh. Install linkerd by running the following task and wait for it to complete.
+
+```bash
+task linkerd-install
+```
+
+<details>
+  <summary>Click here to see the output</summary>
+
+```bash
+Rendering Linkerd CRDs...
+Next, run `linkerd install | kubectl apply -f -` to install the control plane.
+
+customresourcedefinition.apiextensions.k8s.io/authorizationpolicies.policy.linkerd.io created
+customresourcedefinition.apiextensions.k8s.io/httproutes.policy.linkerd.io created
+customresourcedefinition.apiextensions.k8s.io/meshtlsauthentications.policy.linkerd.io created
+customresourcedefinition.apiextensions.k8s.io/networkauthentications.policy.linkerd.io created
+customresourcedefinition.apiextensions.k8s.io/serverauthorizations.policy.linkerd.io created
+customresourcedefinition.apiextensions.k8s.io/servers.policy.linkerd.io created
+customresourcedefinition.apiextensions.k8s.io/serviceprofiles.linkerd.io created
+customresourcedefinition.apiextensions.k8s.io/httproutes.gateway.networking.k8s.io created
+task: [linkerd-install] linkerd install --set proxyInit.runAsRoot=true | kubectl apply -f -
+namespace/linkerd created
+clusterrole.rbac.authorization.k8s.io/linkerd-linkerd-identity created
+clusterrolebinding.rbac.authorization.k8s.io/linkerd-linkerd-identity created
+serviceaccount/linkerd-identity created
+clusterrole.rbac.authorization.k8s.io/linkerd-linkerd-destination created
+clusterrolebinding.rbac.authorization.k8s.io/linkerd-linkerd-destination created
+serviceaccount/linkerd-destination created
+secret/linkerd-sp-validator-k8s-tls created
+validatingwebhookconfiguration.admissionregistration.k8s.io/linkerd-sp-validator-webhook-config created
+secret/linkerd-policy-validator-k8s-tls created
+validatingwebhookconfiguration.admissionregistration.k8s.io/linkerd-policy-validator-webhook-config created
+clusterrole.rbac.authorization.k8s.io/linkerd-policy created
+clusterrolebinding.rbac.authorization.k8s.io/linkerd-destination-policy created
+role.rbac.authorization.k8s.io/remote-discovery created
+rolebinding.rbac.authorization.k8s.io/linkerd-destination-remote-discovery created
+role.rbac.authorization.k8s.io/linkerd-heartbeat created
+rolebinding.rbac.authorization.k8s.io/linkerd-heartbeat created
+clusterrole.rbac.authorization.k8s.io/linkerd-heartbeat created
+clusterrolebinding.rbac.authorization.k8s.io/linkerd-heartbeat created
+serviceaccount/linkerd-heartbeat created
+clusterrole.rbac.authorization.k8s.io/linkerd-linkerd-proxy-injector created
+clusterrolebinding.rbac.authorization.k8s.io/linkerd-linkerd-proxy-injector created
+serviceaccount/linkerd-proxy-injector created
+secret/linkerd-proxy-injector-k8s-tls created
+mutatingwebhookconfiguration.admissionregistration.k8s.io/linkerd-proxy-injector-webhook-config created
+configmap/linkerd-config created
+role.rbac.authorization.k8s.io/ext-namespace-metadata-linkerd-config created
+secret/linkerd-identity-issuer created
+configmap/linkerd-identity-trust-roots created
+service/linkerd-identity created
+service/linkerd-identity-headless created
+deployment.apps/linkerd-identity created
+service/linkerd-dst created
+service/linkerd-dst-headless created
+service/linkerd-sp-validator created
+service/linkerd-policy created
+service/linkerd-policy-validator created
+deployment.apps/linkerd-destination created
+cronjob.batch/linkerd-heartbeat created
+deployment.apps/linkerd-proxy-injector created
+service/linkerd-proxy-injector created
+secret/linkerd-config-overrides created
+task: [linkerd-install] linkerd viz install | kubectl apply -f -
+Waiting for control plane to become available
+Waiting for control plane to become available
+Waiting for control plane to become available
+Waiting for control plane to become available
+Waiting for control plane to become available
+Waiting for control plane to become available
+Waiting for control plane to become available
+Waiting for control plane to become available
+Waiting for control plane to become available
+namespace/linkerd-viz created
+clusterrole.rbac.authorization.k8s.io/linkerd-linkerd-viz-metrics-api created
+clusterrolebinding.rbac.authorization.k8s.io/linkerd-linkerd-viz-metrics-api created
+serviceaccount/metrics-api created
+clusterrole.rbac.authorization.k8s.io/linkerd-linkerd-viz-prometheus created
+clusterrolebinding.rbac.authorization.k8s.io/linkerd-linkerd-viz-prometheus created
+serviceaccount/prometheus created
+clusterrole.rbac.authorization.k8s.io/linkerd-linkerd-viz-tap created
+clusterrole.rbac.authorization.k8s.io/linkerd-linkerd-viz-tap-admin created
+clusterrolebinding.rbac.authorization.k8s.io/linkerd-linkerd-viz-tap created
+clusterrolebinding.rbac.authorization.k8s.io/linkerd-linkerd-viz-tap-auth-delegator created
+serviceaccount/tap created
+rolebinding.rbac.authorization.k8s.io/linkerd-linkerd-viz-tap-auth-reader created
+secret/tap-k8s-tls created
+apiservice.apiregistration.k8s.io/v1alpha1.tap.linkerd.io created
+role.rbac.authorization.k8s.io/web created
+rolebinding.rbac.authorization.k8s.io/web created
+clusterrole.rbac.authorization.k8s.io/linkerd-linkerd-viz-web-check created
+clusterrolebinding.rbac.authorization.k8s.io/linkerd-linkerd-viz-web-check created
+clusterrolebinding.rbac.authorization.k8s.io/linkerd-linkerd-viz-web-admin created
+clusterrole.rbac.authorization.k8s.io/linkerd-linkerd-viz-web-api created
+clusterrolebinding.rbac.authorization.k8s.io/linkerd-linkerd-viz-web-api created
+serviceaccount/web created
+service/metrics-api created
+deployment.apps/metrics-api created
+server.policy.linkerd.io/metrics-api created
+authorizationpolicy.policy.linkerd.io/metrics-api created
+meshtlsauthentication.policy.linkerd.io/metrics-api-web created
+networkauthentication.policy.linkerd.io/kubelet created
+configmap/prometheus-config created
+service/prometheus created
+deployment.apps/prometheus created
+server.policy.linkerd.io/prometheus-admin created
+authorizationpolicy.policy.linkerd.io/prometheus-admin created
+service/tap created
+deployment.apps/tap created
+server.policy.linkerd.io/tap-api created
+authorizationpolicy.policy.linkerd.io/tap created
+clusterrole.rbac.authorization.k8s.io/linkerd-tap-injector created
+clusterrolebinding.rbac.authorization.k8s.io/linkerd-tap-injector created
+serviceaccount/tap-injector created
+secret/tap-injector-k8s-tls created
+mutatingwebhookconfiguration.admissionregistration.k8s.io/linkerd-tap-injector-webhook-config created
+service/tap-injector created
+deployment.apps/tap-injector created
+server.policy.linkerd.io/tap-injector-webhook created
+authorizationpolicy.policy.linkerd.io/tap-injector created
+networkauthentication.policy.linkerd.io/kube-api-server created
+service/web created
+deployment.apps/web created
+serviceprofile.linkerd.io/metrics-api.linkerd-viz.svc.cluster.local created
+serviceprofile.linkerd.io/prometheus.linkerd-viz.svc.cluster.local created
+task: [linkerd-install] linkerd check
+kubernetes-api
+--------------
+√ can initialize the client
+√ can query the Kubernetes API
+
+kubernetes-version
+------------------
+√ is running the minimum Kubernetes API version
+
+linkerd-existence
+-----------------
+√ 'linkerd-config' config map exists
+√ heartbeat ServiceAccount exist
+√ control plane replica sets are ready
+√ no unschedulable pods
+√ control plane pods are ready
+√ cluster networks contains all pods
+√ cluster networks contains all services
+
+linkerd-config
+--------------
+√ control plane Namespace exists
+√ control plane ClusterRoles exist
+√ control plane ClusterRoleBindings exist
+√ control plane ServiceAccounts exist
+√ control plane CustomResourceDefinitions exist
+√ control plane MutatingWebhookConfigurations exist
+√ control plane ValidatingWebhookConfigurations exist
+√ proxy-init container runs as root user if docker container runtime is used
+
+linkerd-identity
+----------------
+√ certificate config is valid
+√ trust anchors are using supported crypto algorithm
+√ trust anchors are within their validity period
+√ trust anchors are valid for at least 60 days
+√ issuer cert is using supported crypto algorithm
+√ issuer cert is within its validity period
+√ issuer cert is valid for at least 60 days
+√ issuer cert is issued by the trust anchor
+
+linkerd-webhooks-and-apisvc-tls
+-------------------------------
+√ proxy-injector webhook has valid cert
+√ proxy-injector cert is valid for at least 60 days
+√ sp-validator webhook has valid cert
+√ sp-validator cert is valid for at least 60 days
+√ policy-validator webhook has valid cert
+√ policy-validator cert is valid for at least 60 days
+
+linkerd-version
+---------------
+√ can determine the latest version
+√ cli is up-to-date
+
+control-plane-version
+---------------------
+√ can retrieve the control plane version
+√ control plane is up-to-date
+√ control plane and cli versions match
+
+linkerd-control-plane-proxy
+---------------------------
+√ control plane proxies are healthy
+√ control plane proxies are up-to-date
+√ control plane proxies and cli versions match
+
+linkerd-viz
+-----------
+√ linkerd-viz Namespace exists
+√ can initialize the client
+√ linkerd-viz ClusterRoles exist
+√ linkerd-viz ClusterRoleBindings exist
+√ tap API server has valid cert
+√ tap API server cert is valid for at least 60 days
+√ tap API service is running
+√ linkerd-viz pods are injected
+√ viz extension pods are running
+√ viz extension proxies are healthy
+√ viz extension proxies are up-to-date
+√ viz extension proxies and cli versions match
+√ prometheus is installed and configured correctly
+√ viz extension self-check
+
+Status check results are √
+```
+</details>
+
+1.2 Inject the linkerd proxy into our podinfo deployment by running another task. This will also restart the deployment.
+
+```bash
+task linkerd-inject
+```
+
+<details>
+  <summary>Click here to see the output</summary>
+```bash
+task: [linkerd-inject] kubectl get deployment podinfo -n podinfo -o yaml | linkerd inject - | kubectl apply -f -
+
+deployment "podinfo" injected
+
+deployment.apps/podinfo configured
+task: [linkerd-inject] kubectl rollout status deployment/podinfo -n podinfo
+Waiting for deployment "podinfo" rollout to finish: 0 out of 2 new replicas have been updated...
+Waiting for deployment "podinfo" rollout to finish: 1 out of 2 new replicas have been updated...
+Waiting for deployment "podinfo" rollout to finish: 1 out of 2 new replicas have been updated...
+Waiting for deployment "podinfo" rollout to finish: 1 out of 2 new replicas have been updated...
+Waiting for deployment "podinfo" rollout to finish: 1 out of 2 new replicas have been updated...
+Waiting for deployment "podinfo" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "podinfo" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "podinfo" rollout to finish: 1 old replicas are pending termination...
+deployment "podinfo" successfully rolled out
+```
+
+## 2. Exploring linkerd
+
+2.1 Lets checkout all of the edges between systems that linkerd knows about.
+
+```bash
+task linkerd-edges
+```
+
+You should be able to see something similar to the following. Note the bottom line which shows the connection between prometheus and podinfo is secured using mTLS.
+
+```bash
+task: [linkerd-edges] linkerd viz edges deployments --all-namespaces
+SRC           DST                      SRC_NS        DST_NS        SECURED       
+metrics-api   prometheus               linkerd-viz   linkerd-viz   √  
+prometheus    metrics-api              linkerd-viz   linkerd-viz   √  
+prometheus    tap                      linkerd-viz   linkerd-viz   √  
+prometheus    tap-injector             linkerd-viz   linkerd-viz   √  
+prometheus    web                      linkerd-viz   linkerd-viz   √  
+prometheus    linkerd-destination      linkerd-viz   linkerd       √  
+prometheus    linkerd-identity         linkerd-viz   linkerd       √  
+prometheus    linkerd-proxy-injector   linkerd-viz   linkerd       √  
+prometheus    podinfo                  linkerd-viz   podinfo       √
+```
+
+2.2 Lets see the http paths that are being called by running `task linkerd-top`.
+
+```bash
+task linkerd-top
+````
+
+Initially you should see something like this. This is mainly the initial page load (the `/` path)
+and the subsequent polls that the frontend does (the `/api/info` paths). Note that both pods are
+responding to requests.
+
+```bash
+Source       Destination               Method      Path        Count    Best   Worst    Last  Success Rate
+192.168.1.4  podinfo-5ff6c6b6c9-n628j  GET         /api/info       3     1ms     5ms     5ms       100.00%
+10.42.1.1    podinfo-5ff6c6b6c9-jdjmk  GET         /api/info       2     2ms     2ms     2ms       100.00%
+10.42.1.1    podinfo-5ff6c6b6c9-jdjmk  GET         /               1     3ms     3ms     3ms       100.00%
+```
+
+2.3 Open a new terminal by clicking the `+` button in the terminal tab.
+
+![New terminal](./assets/new-terminal.png)
+
+2.4 In this terminal run the curl command again you used previously to call the podinfo service. 
+This time add `/status/500` to the curl command to let it fail and see that path show up in the linkerd output.
+
+```bash
+curl podinfo.podinfo:9898/status/500
+```
+
+You'll see the path show up in the linkerd output with a success rate of 0.00%.
+
+```bash
+Source                        Destination               Method      Path          Count    Best   Worst    Last  Success Rate
+...
+code-server-68b7db57fc-jkrpf  podinfo-5ff6c6b6c9-n628j  GET         /status/500       1     2ms     2ms     2ms         0.00%
+```
 
 # Workshop Part 4 (optional) Clusters in Clusters in Clusters
 
-1. Open a terminal and create a vcluster by running `vcluster create test-cluster`.
-1. Once it starts forwarding a connection open a new terminal and run `kubectl get pods -A` again.
-1. Terminate the `vcluster create` command and run `kubectl get pods -A` one last time.
-1. Delete the vcluster by running `vcluster delete test-cluster`
+1. Open a terminal and create a vcluster by running the following command.
+
+```bash
+vcluster create test-cluster
+```
+
+It should start port forwarding to the new kubernetes api that just got created.
+
+```bash
+info   Downloading [command helm]
+info   Create vcluster test-cluster...
+info   execute command: helm upgrade test-cluster /tmp/vcluster-0.15.7.tgz-2160875115 --kubeconfig /tmp/997274681 --namespace code-server --install --repository-config='' --values /tmp/3780948728
+done √ Successfully created virtual cluster test-cluster in namespace code-server
+info   Waiting for vcluster to come up...
+warn   vcluster is waiting, because vcluster pod test-cluster-0 has status: PodInitializing
+warn   vcluster is waiting, because vcluster pod test-cluster-0 has status: PodInitializing
+warn   vcluster is waiting, because vcluster pod test-cluster-0 has status: PodInitializing
+warn   vcluster is waiting, because vcluster pod test-cluster-0 has status: PodInitializing
+done √ Switched active kube context to vcluster_test-cluster_code-server_
+warn   Since you are using port-forwarding to connect, you will need to leave this terminal open
+- Use CTRL+C to return to your previous kube context
+- Use `kubectl get namespaces` in another terminal to access the vcluster
+Forwarding from 127.0.0.1:10071 -> 8443
+Forwarding from [::1]:10071 -> 8443
+```
+
+2. Once it starts forwarding a connection open a new terminal and run kubectl again.
+
+```bash
+kubectl get pods -A
+```
+
+This should list all the pods in the vcluster. But because vcluster is so minimal you'll only see
+the coredns pod.
+
+```bash
+NAMESPACE     NAME                       READY   STATUS    RESTARTS   AGE
+kube-system   coredns-864d4658cb-9jxsq   1/1     Running   0          106s
+```
+
+3. Terminate the `vcluster create` command and run `kubectl get pods -A` one last time.
+
+```bash
+kubectl get pods -A
+```
+
+You'll see the new coredns pod and a new vcluster pod in the code-server namespace.
+
+```bash
+NAMESPACE     NAME                                                    READY   STATUS    RESTARTS   AGE
+kube-system   coredns-864d4658cb-nq9nb                                1/1     Running   0          82m
+code-server   code-server-68b7db57fc-jkrpf                            1/1     Running   0          81m
+...
+podinfo       podinfo-5ff6c6b6c9-jdjmk                                2/2     Running   0          20m
+podinfo       podinfo-5ff6c6b6c9-n628j                                2/2     Running   0          20m
+code-server   test-cluster-0                                          2/2     Running   0          4m16s
+code-server   coredns-864d4658cb-9jxsq-x-kube-system-x-test-cluster   1/1     Running   0          3m8s
+```
+
+4. Delete the vcluster by running `vcluster delete test-cluster`
+
+```bash
+vcluster delete test-cluster
+```
 
 # Workshop Final Part
 
 1. Close your pull request and watch it all disappear.
+
+![Close pull request](./assets/close-pull-request.png)
