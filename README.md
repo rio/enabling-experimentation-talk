@@ -182,7 +182,7 @@ task deploy-webserver
 
 Don't worry if you've missed it. You can find all your forwarded ports under the `ports` tab.
 
-![Port forward tab](./assets/port-forward-tab.png)
+![Port forward tab](./assets/port-forwards-tab.png)
 
 3.3 You should see Caddy's default page.
 
