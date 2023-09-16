@@ -30,12 +30,11 @@ data:
         label: "app/{{.app.metadata.name}}"
 
   trigger.on-deployed: |
-    - description: Application is synced and healthy. Triggered once per commit.
+    - description: Application is synced and healthy.
       when: app.status.operationState.phase in ['Succeeded'] and app.status.health.status == 'Healthy'
-      oncePer: app.status.operationState.syncResult.revision
       send: [app-deployed]
 
   trigger.on-syncing: |
-    - description: Application is syncing. Triggered once per commit.
+    - description: Application is syncing.
       when: app.status.operationState != nil and app.status.health.status == 'Progressing'
       send: [app-syncing]
