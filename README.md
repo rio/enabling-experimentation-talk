@@ -417,6 +417,7 @@ task linkerd-inject
 
 <details>
   <summary>Click here to see the output</summary>
+
 ```bash
 task: [linkerd-inject] kubectl get deployment podinfo -n podinfo -o yaml | linkerd inject - | kubectl apply -f -
 
@@ -434,6 +435,8 @@ Waiting for deployment "podinfo" rollout to finish: 1 old replicas are pending t
 Waiting for deployment "podinfo" rollout to finish: 1 old replicas are pending termination...
 deployment "podinfo" successfully rolled out
 ```
+
+</details>
 
 ## 2. Exploring linkerd
 
