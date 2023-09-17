@@ -3,7 +3,7 @@ author: "Rio Kierkels"
 paging: "%d/%d"
 theme: "theme.json"
 ---
-# [00:00] EdgeCase 2023: Enabling Experimentation Workshop
+# EdgeCase 2023: Enabling Experimentation Workshop
 ----
 
 ```
@@ -18,7 +18,7 @@ and press the ⭐ button to join!
 
 ---
 
-# [00:00] EdgeCase 2023
+# EdgeCase 2023
 ----
 
 ```
@@ -31,7 +31,7 @@ Feat. kubernetes / vcluster / argocd / and more ...
 
 ---
 
-# [01:00] Introduction
+# Introduction
 ----
 
 ```
@@ -45,7 +45,7 @@ Rio Kierkels
 
 ---
 
-# [02:00] The Goal
+# The Goal
 
 ----
 > I want to test out this `bug` / `feature` / `new thing`
@@ -62,7 +62,7 @@ Rio Kierkels
 
 ---
 
-# [04:00] The Problems
+# The Problems
 
 ----
 > My computer is a `potato`.
@@ -82,7 +82,7 @@ Rio Kierkels
 
 ---
 
-# [08:00] Ephemeral Environments
+# Ephemeral Environments
 
 ----
 
@@ -98,7 +98,7 @@ Rio Kierkels
 
 ---
 
-# [11:00] The Approaches (1/2)
+# The Approaches (1/2)
 
 ----
 ## Imperative: Continuous Integration (CI)
@@ -119,7 +119,7 @@ Utilize a CI system to provide on demand environments based on Pull Requests.
 
 ---
 
-# [30:00] The Approaches (2/2)
+# The Approaches (2/2)
 
 ----
 
@@ -141,7 +141,7 @@ Utilize GitOps based flows to provision new environments based on Pull Requests.
 
 ---
 
-# 33:00 Workshop Goal
+# Workshop Goal
 
 ----
 
@@ -153,7 +153,7 @@ Utilize GitOps based flows to provision new environments based on Pull Requests.
 
 ---
 
-# 33:00 Workshop Goal
+# Workshop Goal
 
 ----
 
@@ -165,7 +165,7 @@ Utilize GitOps based flows to provision new environments based on Pull Requests.
 
 ---
 
-# 33:00 Workshop Goal
+# Workshop Goal
 
 ----
 
@@ -183,7 +183,7 @@ Utilize GitOps based flows to provision new environments based on Pull Requests.
 
 ---
 
-# 33:00 Workshop Goal
+# Workshop Goal
 
 ----
 
@@ -201,7 +201,7 @@ Utilize GitOps based flows to provision new environments based on Pull Requests.
 
 ---
 
-# 33:00 Workshop Goal
+# Workshop Goal
 
 ----
 
@@ -224,7 +224,7 @@ Utilize GitOps based flows to provision new environments based on Pull Requests.
 
 ---
 
-# 33:00 Workshop Goal
+# Workshop Goal
 
 ----
 
@@ -247,7 +247,7 @@ Utilize GitOps based flows to provision new environments based on Pull Requests.
 ```
 ---
 
-# [33:00] Workshop Tools
+# Workshop Tools
 
 ----
 
@@ -264,7 +264,7 @@ Utilize GitOps based flows to provision new environments based on Pull Requests.
 
 ---
 
-# 33:00 Basic Architecture
+# Basic Architecture
 
 ----
 

@@ -56,7 +56,7 @@ tasks:
       - command -v graph-easy
     cmds:
       - sudo apt-get -qq update > /dev/null
-      - sudo apt-get -qqy install libgraph-easy-pearl > /dev/null
+      - sudo apt-get -qqy install libgraph-easy-perl > /dev/null
 
   ensure-slides:
     silent: true
