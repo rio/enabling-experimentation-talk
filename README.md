@@ -12,6 +12,9 @@ You will only require:
 
 # Part 0: Repository access
 
+In order to get started you will need to be added as a contributor to this repository. This will
+allow you to create branches and pull requests.
+
 1. In your browser navigate to https://github.com/rio/enabling-experimentation-workshop
 1. Click the star button.
    
@@ -20,6 +23,9 @@ You will only require:
 1. Refresh the page once in a while until you see a notification that someone added you as a contributor.
 
 # Part 1: A pull request
+
+We'll start by making a simple change. We'll change the version of the podinfo image that is used.
+This will just be the standard GitHub pull request workflow you'd be used to.
 
 1. In the browser open the file `podinfo/preview/kustomization.yaml`.
 
@@ -47,6 +53,11 @@ You will only require:
 
 # Part 2: The cuttlefish
 
+Now that you've created the pull request the magic will happen. The pull request will trigger a new
+environment to be created for you separate from all other environments but including the version change.
+This is an asynchronous process so it will take a couple of minutes to complete. In the mean time
+other CI processes could run, like linting, builds or tests.
+
 1. Wait for the orange `Some checks haven't completed yet` message to appear.
 
     ![Wait for the checks](./assets/wait-for-checks.png)
@@ -55,7 +66,7 @@ You will only require:
 
     ![Show all checks](./assets/show-all-checks.png)
 
-1. Click the `Details` link next to the `app/...` check.
+1. Click the `Details` link next to the `app/...` check. Make sure you open this in a different tab and keep it open.
 
     ![Details](./assets/details.png)
 
@@ -65,7 +76,14 @@ You will only require:
 
 # Part 3: The updates
 
+To emulate some more experimental changes we'll make a couple more changes to the podinfo deployment.
+These are just updates to the configuration and image versions but these could just the same be actual
+application code changes or even completely new infrastructure applications like using a different
+database.
+
 ## Image version update
+
+Let's start with another image version update.
 
 1. Navigate back to your branch by clicking on your branch name near the pull request title.
 
@@ -85,23 +103,34 @@ You will only require:
 
 ## A splash of color
 
-1. One final time lets go back to that `podinfo/preview/kustomization.yaml` file and this time let's change the color of the background.
+Now that we've updated the image version we'll make a small configuration change. We'll change the
+background color.
+
+1. One final time lets go back to that `podinfo/preview/kustomization.yaml` file and this we'll
+  edit the `PODINFO_UI_COLOR` configmap value. You can use your own hexadecimal color or use the one
+  in the comment next to the original value.
 
     ![Change the color](./assets/change-color.png)
 
-1. Commit it and watch the cuttlefish again. After a while the background should change into a nice Fullstaq purple.
+1. Commit it and watch the cuttlefish again. After a while the background should start to change.
 
     ![Cuttlefish purple](./assets/cuttlefish-purple.png)
 
 # Part 4: The environment
 
+All of these changes are nice but what is this environment that is being created? Let's take a look.
+
 ## Accessing the environment
 
-1. Edit the URL of your cuttlefish page and add `code-` in front of the URL.
+Each of your ephemeral environments will be accessible through a code-server instance. This is a web
+based version of VS Code that is running in your environment accessible through a URL.
+
+1. Open up a new tab with your podinfo page and edit the URL adding `code-` in front of it.
 
     ![Code URL](./assets/code-url.png)
 
-1. You will be prompted for a password. For your convenience it is set to be the same as your branch name. Simply click the copy button next to your branch name on the pull request page.
+1. You will be prompted for a password. For your convenience it is set to be the same as your
+   branch name. Simply click the copy button next to your branch name on the pull request page.
 
     ![Copy branch name](./assets/copy-branch-name.png)
     ![Password prompt](./assets/password-prompt.png)
@@ -110,12 +139,15 @@ You will only require:
 
     ![Trust authors](./assets/trust-authors.png)
 
-1. Optionally change the color theme to something you like by clicking on the `Browse Color Themes` button. Or by clicking on the cog wheel in the bottom left corner then navigate to `Themes -> Color Theme`
+1. Optionally change the color theme to something you like by clicking on the `Browse Color Themes`
+   button. Or by clicking on the cog wheel in the bottom left corner then navigate to `Themes -> Color Theme`
 
     ![Color theme button](./assets/color-theme-button.png)
     ![Color theme menu](./assets/color-theme-menu.png)
 
 ## Taking a look around
+
+Now that you're in your very own environment lets take a look around by running some commands.
 
 1. Open a new terminal into the enabling experimentation repo by right clicking the folder on the left and selecting `Open in Integrated Terminal`.
 
@@ -127,7 +159,8 @@ You will only require:
     kubectl get pods,svc,ingress -A
     ```
 
-    It should show you something similar to this.
+    It should show you something similar to this. Notice that the workloads deployed is very minimal.
+    Just the coredns pod, our podinfo deployment and the code-server pod in which you're running these commands.
     
     ```bash
     NAMESPACE     NAME                               READY   STATUS    RESTARTS   AGE
@@ -147,13 +180,14 @@ You will only require:
     code-server   ingress.networking.k8s.io/code-server   traefik   code-pr-60-rio.edgecase.rio.wtf   d0f9c870-e66b-45ee-8c7c-6b443de00a93.k8s.civo.com   80      39m
     ```
 
-1. Poke your cuttlefish by using curl. Keep hitting it a couple of times and see it load balance between the two pods.
+1. Poke your cuttlefish by using curl.
 
     ```bash
     curl podinfo.podinfo:9898
     ```
     
     You'll see it respond with a JSON blob containing both the image tag and the background color we set earlier.
+    Hit it a couple of times and see it load balance between the two pods by the changing `hostname` value.
     
     ```json
     {
@@ -173,6 +207,10 @@ You will only require:
 
 ## Deploying a new webserver
 
+Now that we've seen the environment lets deploy something new. We'll deploy a new webserver using
+some basic kubectl commands. I've created a task for this to make it easier to deploy and to automatically
+remove the deployment again.
+
 1. Deploy a new webserver and port-forward it using a task command. 
 
     ```bash
@@ -187,7 +225,8 @@ You will only require:
 
     ![Port forward tab](./assets/port-forwards-tab.png)
 
-1. You should see Caddy's default page.
+1. You should see Caddy's default page. This is the code-server proxying your request to the new webserver.
+   Note the URL ending in `/proxy/80`.
 
     ![Caddy default page](./assets/caddy-default.png)
 
@@ -195,9 +234,14 @@ You will only require:
 
 # Part 5: Infrastucture
 
+Quickly deploying some services to play with is nice. But what if you want to play with something
+more on the infrastructure side of things like a service mesh. This requires cluster admin access
+and luckily we have that since we're running our own cluster.
+
 ## Deploying linkerd
 
-1. Lets see how our cuttlefish deals with a service mesh. Install linkerd by running the following task and wait for it to complete.
+1. Lets see how our cuttlefish deals with a service mesh. Install linkerd by running the following
+   task and wait for it to complete. Igrnore any port-forward popups that might appear.
     
     ```bash
     task linkerd-install
@@ -441,7 +485,30 @@ You will only require:
     
     </details>
 
+1. (Optional) You can inject your code-server pod as well so it will show up when we run all the
+   other linkerd commands in the next section. Just be sure to reload your browser a couple of times
+   until the pod is back up. Also make sure you're in the enabling experimentation folder when running
+   the task commands otherwise it will complain about a missing `Taskfile`.
+
+  ```bash
+  kubectl get deploy/code-server -o yaml | linkerd inject - | kubectl apply -f -
+  ```
+
 ## Exploring linkerd
+
+Your cuttlefish should still be clapping away even with the service mesh in place. Make sure you
+have the cuttlefish page open in a tab somewhere as it will keep polling your podinfo backend.
+We'll also start curl in a loop so we'll have some traffic generated from this code-server pod.
+1. Run the curl command in a loop to generate some traffic.
+
+    ```bash
+    while true; do curl -s podinfo.podinfo:9898; sleep 2; done
+    ```
+
+1. Open a new terminal by clicking the `+` button in the terminal tab.
+
+    ![New terminal](./assets/new-terminal.png)
+
 
 1. Lets checkout all of the edges between systems that linkerd knows about.
     
@@ -449,11 +516,14 @@ You will only require:
     task linkerd-edges
     ```
     
-    You should be able to see something similar to the following. Note the bottom line which shows the connection between prometheus and podinfo is secured using mTLS.
+    You should be able to see something similar to the following. Note the bottom line which shows
+    the connection between prometheus and podinfo is secured using mTLS.
     
     ```bash
     task: [linkerd-edges] linkerd viz edges deployments --all-namespaces
     SRC           DST                      SRC_NS        DST_NS        SECURED       
+    code-server   podinfo                  code-server   podinfo       √  
+    prometheus    code-server              linkerd-viz   code-server   √  
     metrics-api   prometheus               linkerd-viz   linkerd-viz   √  
     prometheus    metrics-api              linkerd-viz   linkerd-viz   √  
     prometheus    tap                      linkerd-viz   linkerd-viz   √  
@@ -462,7 +532,7 @@ You will only require:
     prometheus    linkerd-destination      linkerd-viz   linkerd       √  
     prometheus    linkerd-identity         linkerd-viz   linkerd       √  
     prometheus    linkerd-proxy-injector   linkerd-viz   linkerd       √  
-    prometheus    podinfo                  linkerd-viz   podinfo       √
+    prometheus    podinfo                  linkerd-viz   podinfo       √  
     ```
 
 1. Lets see the http paths that are being called by running `task linkerd-top`.
@@ -476,10 +546,11 @@ You will only require:
     responding to requests.
     
     ```bash
-    Source       Destination               Method      Path        Count    Best   Worst    Last  Success Rate
-    192.168.1.4  podinfo-5ff6c6b6c9-n628j  GET         /api/info       3     1ms     5ms     5ms       100.00%
-    10.42.1.1    podinfo-5ff6c6b6c9-jdjmk  GET         /api/info       2     2ms     2ms     2ms       100.00%
-    10.42.1.1    podinfo-5ff6c6b6c9-jdjmk  GET         /               1     3ms     3ms     3ms       100.00%
+    Source                       Destination               Method      Path        Count    Best   Worst    Last  Success Rate
+    code-server-8f88b9964-2ltzd  podinfo-6cb6fdb9c8-rwcts  GET         /              13   856µs     1ms   859µs       100.00%
+    10.42.0.1                    podinfo-6cb6fdb9c8-69tvm  GET         /api/info       7     1ms     2ms     1ms       100.00%
+    192.168.1.3                  podinfo-6cb6fdb9c8-rwcts  GET         /api/info       6     1ms     2ms     1ms       100.00%
+    code-server-8f88b9964-2ltzd  podinfo-6cb6fdb9c8-69tvm  GET         /               5     1ms     2ms     2ms       100.00%
     ```
 
 1. Open a new terminal by clicking the `+` button in the terminal tab.
