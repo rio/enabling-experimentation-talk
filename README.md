@@ -55,8 +55,8 @@ This will just be the standard GitHub pull request workflow you'd be used to.
 
 Now that you've created the pull request the magic will happen. The pull request will trigger a new
 environment to be created for you separate from all other environments but including the version change.
-This is an asynchronous process so it will take a couple of minutes to complete. In the mean time
-other CI processes could run, like linting, builds or tests.
+This is an asynchronous process so it will take a couple of minutes to complete. In a normal setup
+other CI processes could (and should!) also run, like linting, builds or tests.
 
 1. Wait for the orange `Some checks haven't completed yet` message to appear.
 
@@ -77,7 +77,7 @@ other CI processes could run, like linting, builds or tests.
 # Part 3: The updates
 
 To emulate some more experimental changes we'll make a couple more changes to the podinfo deployment.
-These are just updates to the configuration and image versions but these could just the same be actual
+These are just updates to the image versions and configuration. But these changes could be actual
 application code changes or even completely new infrastructure applications like using a different
 database.
 
@@ -156,7 +156,7 @@ based version of VS Code that is running in your environment accessible through 
   Enter `/home/code/enabling-experimentation-talk` in the input field that pops up and click `Ok`.
   Your browser will reload.
 
-    ![Folder path](./assets/folder-path.png)
+   ![Folder path](./assets/folder-path.png)
 
 ## Taking a look around
 
