@@ -145,13 +145,29 @@ based version of VS Code that is running in your environment accessible through 
     ![Color theme button](./assets/color-theme-button.png)
     ![Color theme menu](./assets/color-theme-menu.png)
 
+1. If you look on the left hand side you'll see the contents of the `/home/coder` folder. To make
+   the next steps easier the enabling experimentation repo is already cloned into your environment.
+
+   Let's open this up by navigating to the menu in the top left (the three horizontal bars) and
+   going to `File -> Open Folder`.
+
+    ![Open folder](./assets/open-folder.png)
+
+  Enter `/home/code/enabling-experimentation-talk` in the input field that pops up and click `Ok`.
+  Your browser will reload.
+
+    ![Folder path](./assets/folder-path.png)
+
 ## Taking a look around
 
 Now that you're in your very own environment lets take a look around by running some commands.
 
-1. Open a new terminal into the enabling experimentation repo by right clicking the folder on the left and selecting `Open in Integrated Terminal`.
+1. Open a new terminal by going to the menu again and selecting `Terminal -> New Terminal`.
 
     ![Open terminal](./assets/open-terminal.png)
+
+  > Note you can make the terminal bigger by closing the file explorer (click the little file icon in the top left)
+  > and maximizing the terminal (click the `^` icon next to the `x` on the top right part of the terminal).
 
 1. Checkout your new environment by running kubectl.
 
@@ -180,14 +196,14 @@ Now that you're in your very own environment lets take a look around by running 
     code-server   ingress.networking.k8s.io/code-server   traefik   code-pr-60-rio.edgecase.rio.wtf   d0f9c870-e66b-45ee-8c7c-6b443de00a93.k8s.civo.com   80      39m
     ```
 
-1. Poke your cuttlefish by using curl.
+1. Poke your cuttlefish by running curl in a loop to generate some traffic.
 
     ```bash
-    curl podinfo.podinfo:9898
+    while true; do curl -s podinfo.podinfo:9898; sleep 2; done
     ```
     
     You'll see it respond with a JSON blob containing both the image tag and the background color we set earlier.
-    Hit it a couple of times and see it load balance between the two pods by the changing `hostname` value.
+    Note the changing `hostname` value see it load balance between the two pods.
     
     ```json
     {
@@ -204,6 +220,10 @@ Now that you're in your very own environment lets take a look around by running 
       "num_cpu": "4"
     }
     ```
+
+1. Leave this command running an open another terminal by clicking the `+` button in the terminal tab.
+
+    ![New terminal](./assets/new-terminal.png)
 
 ## Deploying a new webserver
 
@@ -487,28 +507,17 @@ and luckily we have that since we're running our own cluster.
 
 1. (Optional) You can inject your code-server pod as well so it will show up when we run all the
    other linkerd commands in the next section. Just be sure to reload your browser a couple of times
-   until the pod is back up. Also make sure you're in the enabling experimentation folder when running
-   the task commands otherwise it will complain about a missing `Taskfile`.
+   until the pod is back up. Don't forget to restart the curl loop that polls the podinfo service.
 
-  ```bash
-  kubectl get deploy/code-server -o yaml | linkerd inject - | kubectl apply -f -
-  ```
+    ```bash
+    kubectl get deploy/code-server -o yaml | linkerd inject - | kubectl apply -f -
+    ```
 
 ## Exploring linkerd
 
 Your cuttlefish should still be clapping away even with the service mesh in place. Make sure you
 have the cuttlefish page open in a tab somewhere as it will keep polling your podinfo backend.
 We'll also start curl in a loop so we'll have some traffic generated from this code-server pod.
-1. Run the curl command in a loop to generate some traffic.
-
-    ```bash
-    while true; do curl -s podinfo.podinfo:9898; sleep 2; done
-    ```
-
-1. Open a new terminal by clicking the `+` button in the terminal tab.
-
-    ![New terminal](./assets/new-terminal.png)
-
 
 1. Lets checkout all of the edges between systems that linkerd knows about.
     
@@ -553,11 +562,11 @@ We'll also start curl in a loop so we'll have some traffic generated from this c
     code-server-8f88b9964-2ltzd  podinfo-6cb6fdb9c8-69tvm  GET         /               5     1ms     2ms     2ms       100.00%
     ```
 
-1. Open a new terminal by clicking the `+` button in the terminal tab.
+1. Keep linkerd top running and open a new terminal by clicking the `+` button in the terminal tab.
 
     ![New terminal](./assets/new-terminal.png)
 
-1.  In this terminal run the curl command again you used previously to call the podinfo service. 
+1.  In this terminal run a variation of the curl command again you used previously to call the podinfo service. 
     This time add `/status/500` to the curl command to let it fail and see that path show up in the linkerd output.
     
     ```bash
@@ -637,6 +646,14 @@ We'll also start curl in a loop so we'll have some traffic generated from this c
     
     ```bash
     vcluster delete test-cluster
+    ```
+
+    You should see the following output.
+
+    ```bash
+    info   Delete vcluster test-cluster...
+    done √ Successfully deleted virtual cluster test-cluster in namespace code-server
+    done √ Successfully deleted virtual cluster pvc data-test-cluster-0 in namespace code-server
     ```
 
 # Final Part: Cleanup
