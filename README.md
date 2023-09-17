@@ -175,7 +175,7 @@ Now that you're in your very own environment lets take a look around by running 
     kubectl get pods,svc,ingress -A
     ```
 
-    It should show you something similar to this. Notice that the workloads deployed is very minimal.
+    It should show you something similar to this. Notice that there are not many workloads deployed.
     Just the coredns pod, our podinfo deployment and the code-server pod in which you're running these commands.
     
     ```bash
@@ -196,7 +196,8 @@ Now that you're in your very own environment lets take a look around by running 
     code-server   ingress.networking.k8s.io/code-server   traefik   code-pr-60-rio.edgecase.rio.wtf   d0f9c870-e66b-45ee-8c7c-6b443de00a93.k8s.civo.com   80      39m
     ```
 
-1. Poke your cuttlefish by running curl in a loop to generate some traffic.
+1. To show that we're actually running in the same cluster as the podinfo deployment, we'll start
+   poking your cuttlefish by running curl in a loop to generate some traffic.
 
     ```bash
     while true; do curl -s podinfo.podinfo:9898; sleep 2; done
@@ -517,7 +518,6 @@ and luckily we have that since we're running our own cluster.
 
 Your cuttlefish should still be clapping away even with the service mesh in place. Make sure you
 have the cuttlefish page open in a tab somewhere as it will keep polling your podinfo backend.
-We'll also start curl in a loop so we'll have some traffic generated from this code-server pod.
 
 1. Lets checkout all of the edges between systems that linkerd knows about.
     
