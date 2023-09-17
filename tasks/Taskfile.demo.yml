@@ -98,3 +98,33 @@ tasks:
     cmds:
       - ./bin/slides slides.md
 
+  invite-users:
+    interactive: true
+    silent: true
+    requires:
+      vars:
+        - GITHUB_TOKEN
+    vars:
+      GITHUB_API_URL: https://api.github.com/repos/rio/enabling-experimentation-workshop
+      DRYRUN: "{{.DRYRUN | default true}}"
+    cmds:
+      - |-
+        gum spin --title="Fetching stargazers..." --show-output -- curl --header "X-GitHub-Api-Version: 2022-11-28" --header "Authorization: Bearer {{.GITHUB_TOKEN}}" {{.GITHUB_API_URL}}/stargazers | jq -r '.[].login' | sort -u > /tmp/stargazers
+        gum spin --title="Fetching collaborators..." --show-output -- curl --header "X-GitHub-Api-Version: 2022-11-28" --header "Authorization: Bearer {{.GITHUB_TOKEN}}" {{.GITHUB_API_URL}}/collaborators | jq -r '.[].login' | sort -u > /tmp/collaborators
+        gum spin --title="Fetching existing invites..." --show-output -- curl --header "X-GitHub-Api-Version: 2022-11-28" --header "Authorization: Bearer {{.GITHUB_TOKEN}}" {{.GITHUB_API_URL}}/invitations | jq -r '.[].invitee.login' | sort -u > /tmp/invited-users
+
+        comm -23 /tmp/stargazers /tmp/collaborators > /tmp/missing-collaborators
+        comm -23 /tmp/missing-collaborators /tmp/invited-users > /tmp/need-an-invitiation
+
+        users_to_add=($(cat /tmp/need-an-invitiation | gum filter --limit=0 --no-limit --prompt="Select users to invite > "))
+
+        gum confirm --default=false "Are you sure you want to add ${#users_to_add[*]} users?"
+
+        for user in ${users_to_add[*]}; do
+          if [[ "{{.DRYRUN}}" = "false" ]] ; then
+            gum spin --title="Inviting $user..." -- curl -sSf --header "X-GitHub-Api-Version: 2022-11-28" --header "Authorization: Bearer {{.GITHUB_TOKEN}}" --request PUT {{.GITHUB_API_URL}}/collaborators/$user
+            gum spin --title="Avoiding rate limits..." -- sleep 1
+          else
+            gum spin --title="[DRYRUN] Inviting $user..." -- sleep 1
+          fi
+        done
