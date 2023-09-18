@@ -105,6 +105,7 @@ tasks:
       - task: tools:ensure-gum
     requires:
       vars:
+        # token requires the following permissions: read:org, public_repo, repo:invite
         - GITHUB_TOKEN
     vars:
       GITHUB_API_URL: https://api.github.com/repos/rio/enabling-experimentation-workshop
