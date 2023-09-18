@@ -20,7 +20,18 @@ allow you to create branches and pull requests.
    
     ![Star the repository](./assets/star.png)
 
-1. Refresh the page once in a while until you see a notification that someone added you as a contributor.
+1. Refresh the page once in a while until you see a notification that someone invited you as a contributor.
+
+    ![you are invited](./assets/you-are-invited.png)
+
+1. Accept the invitation.
+
+    ![accept invitation](./assets/accept-invitation.png)
+
+1. You should now have commit access to the repository. You can create and delete branches but you
+   cannot touch the main branch.
+
+    ![push access](./assets/you-have-push-access.png)
 
 # Part 1: A pull request
 
