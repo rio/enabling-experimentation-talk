@@ -90,6 +90,11 @@ tasks:
           --from-file=tls.crt={{.CERTIFICATE_CERT_FILE}} \
           --from-file=tls.key={{.CERTIFICATE_KEY_FILE}}
 
+  port-forward-argocd:
+    desc: "Starts a port-forward to ArgoCD to make it accessible on localhost:8080"
+    cmds:
+      - kubectl port-forward --namespace argocd svc/argocd-server 8080:443
+
   slides:
     desc: "Start the slides"
     dir: slides

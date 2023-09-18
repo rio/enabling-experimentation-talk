@@ -1,9 +1,9 @@
 ---
 author: "Rio Kierkels"
-paging: "%d/%d"
+paging: "  github.com/rio/enabling-experimentation-workshop | %d/%d"
 theme: "theme.json"
 ---
-# EdgeCase 2023: Enabling Experimentation Workshop
+# EdgeCase 2023 | Enabling Experimentation Workshop
 ----
 
 ```
@@ -12,7 +12,7 @@ Welcome !
 ~~~
 ```
 
-Please go to https://github.com/rio/enabling-experimentation-workshop
+Please go to github.com/rio/enabling-experimentation-workshop
 
 and press the ⭐ button to join!
 
@@ -243,6 +243,19 @@ Utilize GitOps based flows to provision new environments based on Pull Requests.
 ```
 ~~~graph-easy --as=boxart
 [ Closed Pull Request ] -> [ No Environment ]
+~~~
+```
+---
+
+# EdgeCase 2023 | Enabling Experimentation Workshop
+
+----
+> Time to get your hands dirty!
+----
+
+```
+~~~figlet -c -f slant
+Let's Go!
 ~~~
 ```
 ---
