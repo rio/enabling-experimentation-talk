@@ -63,7 +63,7 @@ spec:
                   args:
                   - |
                     if ! [[ -d enabling-experimentation-talk ]]; then
-                      git clone --branch workshop https://github.com/rio/enabling-experimentation-talk.git
+                      git clone --branch workshop-edgecase-2023 https://github.com/rio/enabling-experimentation-talk.git
                     fi
 
                     cat >> .bashrc <<<"export PATH=$HOME/enabling-experimentation-talk/.bin:$PATH"
