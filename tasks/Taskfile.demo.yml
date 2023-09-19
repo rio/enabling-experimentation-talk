@@ -11,6 +11,7 @@ tasks:
   up:
     desc: "Setup the demo"
     cmds:
+      - cmd:  helm upgrade --install --set providers.kubernetesIngress.publishedService.enabled=true --repo https://traefik.github.io/charts traefik --create-namespace --namespace traefik traefik
       - task: deploy-argocd
       - task: setup-github-secrets
       - task: setup-github-notification-secrets

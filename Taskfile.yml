@@ -55,4 +55,4 @@ tasks:
       - kubectl create deployment caddy --image caddy --port 80
       - kubectl expose deployment/caddy
       - kubectl wait --for condition=available deployments/caddy
-      - kubectl port-forward service/caddy 80
+      - kubectl port-forward service/caddy 8888:80
