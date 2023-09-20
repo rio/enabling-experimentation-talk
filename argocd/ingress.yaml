@@ -4,7 +4,18 @@ metadata:
   name: argocd-server-ingress
   namespace: argocd
 spec:
+  ingressClassName: traefik
   rules:
+  - host: argocd.edgecase.rio.wtf
+    http:
+      paths:
+      - path: /api/webhook
+        pathType: Exact
+        backend:
+          service:
+            name: argocd-server
+            port:
+              name: http
   - host: argocd.localhost
     http:
       paths:
