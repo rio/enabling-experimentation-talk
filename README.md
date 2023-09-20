@@ -164,7 +164,7 @@ based version of VS Code that is running in your environment accessible through 
 
     ![Open folder](./assets/open-folder.png)
 
-  Enter `/home/code/enabling-experimentation-talk` in the input field that pops up and click `Ok`.
+  Enter `/home/coder/enabling-experimentation-talk` in the input field that pops up and click `Ok`.
   Your browser will reload.
 
    ![Folder path](./assets/folder-path.png)

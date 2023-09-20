@@ -294,7 +294,7 @@ Let's Go!
 ---
 
 ----
-> [Repository      ](https://github.com/rio/enabling-experimentation-talk)
+> Repository -> github.com/rio/enabling-experimentation-talk
 ----
 
 ```
