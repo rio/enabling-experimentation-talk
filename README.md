@@ -273,7 +273,7 @@ and luckily we have that since we're running our own cluster.
 ## Deploying linkerd
 
 1. Lets see how our cuttlefish deals with a service mesh. Install linkerd by running the following
-   task and wait for it to complete. Igrnore any port-forward popups that might appear.
+   task and wait for it to complete. Ignore any port-forward popups that might appear.
     
     ```bash
     task linkerd-install
