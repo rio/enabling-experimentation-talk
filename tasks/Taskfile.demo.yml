@@ -118,9 +118,9 @@ tasks:
       DRYRUN: "{{.DRYRUN | default true}}"
     cmds:
       - |-
-        .bin/gum spin --title="Fetching stargazers..." --show-output -- curl --header "X-GitHub-Api-Version: 2022-11-28" --header "Authorization: Bearer {{.GITHUB_TOKEN}}" {{.GITHUB_API_URL}}/stargazers | jq -r '.[].login' | sort -u > /tmp/stargazers
-        .bin/gum spin --title="Fetching collaborators..." --show-output -- curl --header "X-GitHub-Api-Version: 2022-11-28" --header "Authorization: Bearer {{.GITHUB_TOKEN}}" {{.GITHUB_API_URL}}/collaborators | jq -r '.[].login' | sort -u > /tmp/collaborators
-        .bin/gum spin --title="Fetching existing invites..." --show-output -- curl --header "X-GitHub-Api-Version: 2022-11-28" --header "Authorization: Bearer {{.GITHUB_TOKEN}}" {{.GITHUB_API_URL}}/invitations | jq -r '.[].invitee.login' | sort -u > /tmp/invited-users
+        .bin/gum spin --title="Fetching stargazers..." --show-output -- curl --header "X-GitHub-Api-Version: 2022-11-28" --header "Authorization: Bearer {{.GITHUB_TOKEN}}" {{.GITHUB_API_URL}}/stargazers?per_page=100 | jq -r '.[].login' | sort -u > /tmp/stargazers
+        .bin/gum spin --title="Fetching collaborators..." --show-output -- curl --header "X-GitHub-Api-Version: 2022-11-28" --header "Authorization: Bearer {{.GITHUB_TOKEN}}" {{.GITHUB_API_URL}}/collaborators?per_page=100 | jq -r '.[].login' | sort -u > /tmp/collaborators
+        .bin/gum spin --title="Fetching existing invites..." --show-output -- curl --header "X-GitHub-Api-Version: 2022-11-28" --header "Authorization: Bearer {{.GITHUB_TOKEN}}" {{.GITHUB_API_URL}}/invitations?per_page=100 | jq -r '.[].invitee.login' | sort -u > /tmp/invited-users
 
         comm -23 /tmp/stargazers /tmp/collaborators > /tmp/missing-collaborators
         comm -23 /tmp/missing-collaborators /tmp/invited-users > /tmp/need-an-invitiation
